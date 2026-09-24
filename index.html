@@ -362,17 +362,17 @@
       bottom: 36px;
       right: 40px;
       z-index: 10;
-      opacity: 0;
-      transition: opacity 0.6s ease;
+      mix-blend-mode: screen;
     }
-    .corner-shape.visible { opacity: 1; }
 
     .corner-shape video {
       width: 80px;
       height: auto;
       display: block;
-      mix-blend-mode: screen;
+      opacity: 0;
+      transition: opacity 0.6s ease;
     }
+    .corner-shape.visible video { opacity: 1; }
 
     @keyframes chevronSlide {
       0%   { transform: translateX(0); }
@@ -626,23 +626,32 @@
 
     // touch swipe for mobile
     let touchStartX = 0;
+    let touchStartY = 0;
     let touchLastX = 0;
+    let isSwiping = false;
     const clip = document.getElementById('work-row-clip');
     clip.addEventListener('touchstart', e => {
       touchStartX = touchLastX = e.touches[0].clientX;
+      touchStartY = e.touches[0].clientY;
+      isSwiping = false;
     }, { passive: true });
     clip.addEventListener('touchmove', e => {
       if (document.getElementById('inline-detail')) return;
-      const dx = touchLastX - e.touches[0].clientX;
+      const dx = e.touches[0].clientX - touchStartX;
+      const dy = e.touches[0].clientY - touchStartY;
+      // lock direction on first significant movement
+      if (!isSwiping && Math.abs(dx) < 5 && Math.abs(dy) < 5) return;
+      if (!isSwiping) {
+        if (Math.abs(dy) > Math.abs(dx)) return; // vertical — let page scroll
+        isSwiping = true;
+      }
+      e.preventDefault();
+      const delta = touchLastX - e.touches[0].clientX;
       touchLastX = e.touches[0].clientX;
       workRow.style.transition = 'none';
-      setX(currentPx - dx, false);
-    }, { passive: true });
-    clip.addEventListener('touchend', e => {
-      const totalDx = touchStartX - e.changedTouches[0].clientX;
-      if (Math.abs(totalDx) < 5) return; // tap, not swipe
-      e.stopPropagation();
-    }, { passive: true });
+      setX(currentPx - delta, false);
+    }, { passive: false });
+    clip.addEventListener('touchend', () => { isSwiping = false; }, { passive: true });
 
     function goHome() {
       const nav = document.querySelector('nav');
