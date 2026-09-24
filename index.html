@@ -392,7 +392,15 @@
 
       .work-grid { width: 100%; gap: 16px; }
 
-      .work-row-clip { padding-left: 20px; }
+      .work-row-clip {
+        padding-left: 20px;
+        overflow-x: scroll;
+        -webkit-overflow-scrolling: touch;
+        scroll-snap-type: x mandatory;
+        scrollbar-width: none;
+      }
+      .work-row-clip::-webkit-scrollbar { display: none; }
+      .work-item { scroll-snap-align: start; }
 
       .work-item img {
         width: 72vw;
@@ -637,34 +645,7 @@
       setX(currentPx - e.deltaX, false);
     }, { passive: false });
 
-    // touch swipe for mobile
-    let touchStartX = 0;
-    let touchStartY = 0;
-    let touchLastX = 0;
-    let isSwiping = false;
-    const clip = document.getElementById('work-row-clip');
-    clip.addEventListener('touchstart', e => {
-      touchStartX = touchLastX = e.touches[0].clientX;
-      touchStartY = e.touches[0].clientY;
-      isSwiping = false;
-    }, { passive: true });
-    clip.addEventListener('touchmove', e => {
-      if (document.getElementById('inline-detail')) return;
-      const dx = e.touches[0].clientX - touchStartX;
-      const dy = e.touches[0].clientY - touchStartY;
-      // lock direction on first significant movement
-      if (!isSwiping && Math.abs(dx) < 5 && Math.abs(dy) < 5) return;
-      if (!isSwiping) {
-        if (Math.abs(dy) > Math.abs(dx)) return; // vertical — let page scroll
-        isSwiping = true;
-      }
-      e.preventDefault();
-      const delta = touchLastX - e.touches[0].clientX;
-      touchLastX = e.touches[0].clientX;
-      workRow.style.transition = 'none';
-      setX(currentPx - delta, false);
-    }, { passive: false });
-    clip.addEventListener('touchend', () => { isSwiping = false; }, { passive: true });
+    // touch devices use native CSS scroll (see mobile media query)
 
     function goHome() {
       const nav = document.querySelector('nav');
@@ -675,8 +656,11 @@
         document.getElementById('work-grid').classList.remove('visible');
         document.getElementById('contact-info').classList.remove('visible');
         document.getElementById('nav-links').style.display = 'flex';
+        document.getElementById('nav-work').textContent = '';
+        document.getElementById('contact-btn').textContent = '';
         nav.style.opacity = '1';
         main.style.opacity = '1';
+        typewriteNav();
       }, 400);
     }
 
@@ -729,8 +713,7 @@
       if (document.getElementById('inline-detail')) {
         hideDetail();
       } else {
-        document.getElementById('work-grid').classList.remove('visible');
-        document.getElementById('nav-links').style.display = 'flex';
+        goHome();
       }
     });
 
