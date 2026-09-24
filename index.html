@@ -435,7 +435,13 @@
         align-items: center;
       }
 
-      .corner-shape { display: none; }
+      .corner-shape {
+        position: static;
+        display: flex;
+        justify-content: center;
+        margin-top: 32px;
+        mix-blend-mode: screen;
+      }
     }
   </style>
 </head>
@@ -478,14 +484,13 @@
         </svg>
       </span>
     </div>
-  </main>
-
   <div class="corner-shape">
     <video autoplay muted loop playsinline>
       <source src="asset.webm" type="video/webm">
       <source src="asset.mp4" type="video/mp4">
     </video>
   </div>
+  </main>
 
   <script>
 
