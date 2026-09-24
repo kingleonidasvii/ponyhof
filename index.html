@@ -67,7 +67,7 @@
     nav.visible { opacity: 1; }
 
     .nav-logo {
-      height: 48px;
+      height: 64px;
       width: auto;
       display: block;
     }
@@ -385,8 +385,9 @@
     }
 
     @media (max-width: 600px) {
-      nav { padding: 20px 20px; }
+      nav { padding: 20px 20px; width: 100%; display: flex; justify-content: center; }
       .nav-logo { height: 32px; }
+      main { padding-top: 0; justify-content: center; }
       .nav-links { gap: 32px; }
 
       .work-grid { width: 100%; gap: 16px; }
@@ -414,6 +415,16 @@
       #inline-detail {
         padding: 0;
         width: 100%;
+      }
+
+      .work-grid.detail-open {
+        position: fixed;
+        inset: 0;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        justify-content: flex-start;
+        padding: 100px 0 60px;
+        align-items: center;
       }
 
       .corner-shape { display: none; }
@@ -500,6 +511,7 @@
         document.getElementById('work-row-wrap').style.display = 'none';
 
         // build detail view
+        document.getElementById('work-grid').classList.add('detail-open');
         detailView.innerHTML = `<img src="${project.img}" alt="${project.label}">`;
         detailView.style.display = 'flex';
         detailView.style.animation = 'panelFadeIn 0.35s cubic-bezier(0.22,1,0.36,1) forwards';
@@ -556,6 +568,7 @@
     function hideDetail() {
       detailView.style.display = 'none';
       detailView.innerHTML = '';
+      document.getElementById('work-grid').classList.remove('detail-open');
       const wrap = document.getElementById('work-row-wrap');
       wrap.style.display = '';
       wrap.style.opacity = '';
