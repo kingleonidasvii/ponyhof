@@ -598,7 +598,8 @@
         z-index: 200;
       }
 
-      .corner-shape { display: none; }
+      .corner-shape { display: block; bottom: 20px; right: 20px; }
+      .corner-shape video { width: 56px; }
 
       .upcoming-tag { font-size: 10px; }
       .dog-ear { font-size: 8px; padding: 2px 6px; }
@@ -652,7 +653,7 @@
   </main>
 
   <div class="corner-shape">
-    <video autoplay muted loop playsinline>
+    <video id="corner-video" muted loop playsinline preload="auto">
       <source src="asset.webm" type="video/webm">
       <source src="asset.mp4" type="video/mp4">
     </video>
@@ -849,9 +850,9 @@
       detailView.innerHTML = '';
       document.getElementById('work-grid').classList.remove('detail-open');
       const wrap = document.getElementById('work-row-wrap');
-      wrap.style.display = '';
-      wrap.style.opacity = '';
-      wrap.style.transition = '';
+      wrap.style.transition = 'none';
+      wrap.style.display = 'flex';
+      wrap.style.opacity = '1';
       setX(currentPx, false);
     }
 
@@ -969,7 +970,13 @@
             main.style.opacity = '1';
             // "work" = 4 chars × 80ms + 120ms gap + "contact" = 7 chars × 80ms ≈ 1080ms total
             typewriteNav();
-            setTimeout(() => document.querySelector('.corner-shape').classList.add('visible'), 1150);
+            setTimeout(() => {
+              document.querySelector('.corner-shape').classList.add('visible');
+              const cv = document.getElementById('corner-video');
+              cv.muted = true;
+              cv.volume = 0;
+              cv.play().catch(() => {});
+            }, 1150);
           }, 1000);
         }, 300);
       }
