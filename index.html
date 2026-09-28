@@ -738,7 +738,6 @@
               el.setAttribute('preload', 'auto');
               el.muted = true;
               el.volume = 0;
-              el.addEventListener('canplay', () => el.play().catch(() => {}), { once: true });
             } else {
               el = document.createElement('img');
               el.src = src;
@@ -778,8 +777,16 @@
           // start animation after first set of images ready (avoids blank-flash on mobile)
           const firstImgs = Array.from(gallery.querySelectorAll('img')).slice(0, N);
           let loaded = 0;
+          const playAllVideos = () => {
+            gallery.querySelectorAll('video').forEach(v => {
+              v.muted = true; v.volume = 0;
+              v.play().catch(() => {});
+            });
+          };
           const startAnim = () => {
             gallery.style.animation = `galleryScroll ${N * 6}s linear infinite`;
+            // small delay so browser settles the animation before play
+            setTimeout(playAllVideos, 200);
           };
           if (firstImgs.length === 0) {
             startAnim();
@@ -1009,6 +1016,17 @@
 
     // history state management
     history.replaceState({ page: 'home' }, '');
+
+    document.addEventListener('visibilitychange', () => {
+      if (!document.hidden) {
+        document.querySelectorAll('.detail-gallery video').forEach(v => {
+          v.muted = true; v.volume = 0;
+          v.play().catch(() => {});
+        });
+        const cv = document.getElementById('corner-video');
+        if (cv) { cv.muted = true; cv.play().catch(() => {}); }
+      }
+    });
 
     window.addEventListener('popstate', e => {
       const state = e.state || { page: 'home' };
