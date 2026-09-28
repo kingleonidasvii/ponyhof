@@ -160,6 +160,7 @@
       width: 100vw;
       flex-shrink: 0;
       padding-left: 40px;
+      overscroll-behavior-x: contain;
     }
 
     .work-row {
@@ -181,6 +182,7 @@
     .work-row.animating-in .work-item:nth-child(6) { animation-delay: 0.60s; }
 
     .work-item {
+      position: relative;
       display: flex;
       flex-direction: column;
       gap: 8px;
@@ -244,13 +246,82 @@
 
     .work-detail-view {
       display: flex;
+      flex-direction: column;
+      gap: 32px;
+      width: 100%;
+      max-width: 100vw;
+      min-width: 0;
+      padding-left: 40px;
+      box-sizing: border-box;
+      animation: panelFadeIn 0.35s cubic-bezier(0.22,1,0.36,1) forwards;
+    }
+
+    .detail-top {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      align-items: flex-start;
+      position: relative;
+    }
+
+    .detail-top-row {
+      display: flex;
       flex-direction: row;
       gap: 32px;
       align-items: flex-start;
       width: 100%;
-      padding-left: 40px;
-      box-sizing: border-box;
-      animation: panelFadeIn 0.35s cubic-bezier(0.22,1,0.36,1) forwards;
+    }
+
+    .upcoming-tag {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      color: var(--blue);
+      background: var(--cream);
+      padding: 4px 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      display: inline-block;
+    }
+
+    .dog-ear {
+      position: absolute;
+      top: 0;
+      left: 0;
+      font-family: 'Space Mono', monospace;
+      font-size: 9px;
+      color: var(--blue);
+      background: var(--cream);
+      padding: 3px 8px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    .detail-gallery-wrap {
+      overflow: hidden;
+      width: calc(100vw - 40px);
+    }
+
+    .detail-gallery {
+      display: flex;
+      flex-direction: row;
+      gap: 12px;
+      will-change: transform;
+    }
+
+    @keyframes galleryScroll {
+      from { transform: translateX(0); }
+      to   { transform: translateX(var(--gallery-set-width)); }
+    }
+
+    .detail-gallery img,
+    .detail-gallery video {
+      width: 180px;
+      height: 220px;
+      object-fit: cover;
+      display: block;
+      flex-shrink: 0;
     }
 
     .work-detail-view img {
@@ -364,6 +435,14 @@
     .close-btn.visible { opacity: 1; }
     .close-btn.visible:hover { opacity: 0.7; }
 
+    .work-grid.detail-open #work-close {
+      position: fixed;
+      left: 40px;
+      top: 50%;
+      transform: translateY(-50%);
+      margin-top: 0;
+    }
+
     .corner-shape {
       position: fixed;
       bottom: 36px;
@@ -405,6 +484,7 @@
         -webkit-overflow-scrolling: touch;
         scroll-snap-type: x mandatory;
         scrollbar-width: none;
+        overscroll-behavior-x: contain;
       }
       .work-row-clip::-webkit-scrollbar { display: none; }
       .work-item { scroll-snap-align: start; }
@@ -506,12 +586,11 @@
 
 
     const projects = [
-      { img: 'adidas.webp',       label: 'Adidas',            url: 'https://adidas.com',            desc: 'St. Pauli, a 3x3 team and a winter drop made it easy to stay loose and keep things street level. Shot on our Canon EOS 77D with our Canon EF 50mm f/1.8 STM and EF-S 24mm f/2.8 STM, plus our iPhone 15 Pro.' },
-      { img: 'kickz.webp',        label: 'Kickz',             url: 'https://kickz.com',             desc: 'All natural light, so we kept the kit simple and let the streets do the work. Canon EOS 77D with the EF 50mm f/1.8 STM and EF-S 24mm f/2.8 STM.' },
-      { img: 'adada.webp',        label: 'ADADA Paris',       url: 'https://adadastore.com',        desc: 'Over a year in, this is still one of our favorite ongoing collaborations. Canon EOS 77D and EF 50mm f/1.8 STM, and a Blackmagic Pocket Cinema Camera 6K with a Sigma 30mm f/1.4 DC HSM Art. Lit with an Aputure 300X and softbox.' },
-      { img: 'lovelee.png',       label: 'Lovelee',           url: 'https://itsloveleee.com',            desc: 'Ongoing artist development, videography, photography, product management and Meta advertising. Multicam live performances on two Blackmagic Pocket Cinema Camera 6Ks and interviews on Sony ZV-E10s. Stills on our Canon and Lumix G70.' },
-      { img: 'lollapalooza.webp', label: 'Lollapalooza',      url: 'https://lollapalooza.com',       desc: 'We were invited to shoot the aftermovie and, as requested, did it on our old Sony camcorder — the one we usually save for skate videos. It turned out to be a lot of fun.' },
-      { img: 'rfm.png',           label: 'Rat für Migration', url: 'https://rat-fuer-migration.de', desc: 'Invited to cover the conference, panels included. Since the event was meant to feel intimate, we shot on an older Nikon with a vintage 50mm prime. It gives a warmth we feel newer mirrorless cameras tend to lack.' },
+      { img: 'kickz4.webp',       label: 'St.Pauli 3x3x3',   url: 'https://kickz.com',             media: ['kickz1.webp','kickz-nnb.webp','kickz5.webp','kickz-v1.mp4','kickz6.webp','kickz7.webp','kickz8.webp','kickz-v2.mp4'], desc: 'We built and ran social for St. Pauli KICKZ 3x3 from the ground up, producing all short-form photo and video content in-house and travelling with the team across the international FIBA 3x3 circuit. Within 10 months, we grew the account from zero to nearly **3,000** **followers,** while our Instagram Reels generated over **6** **million** **organic** **views** alone. We combined fast, on-the-ground tournament coverage with high-end content for the team, players and brand partners, building a social presence around a rapidly growing 3x3 project, with brand partners including Adidas, Kickz93 and Viva con Agua. The following year, the team became Baskets Bonn Telekom, with Deutsche Telekom coming on as main sponsor.' },
+      { img: 'lovelee2.webp',       label: 'Lovelee',           url: 'https://itsloveleee.com',            media: ['lovelee1.webp','lovelee3.webp','lovelee7.webp','lovelee8.webp','lovelee-video.mp4'], desc: 'We run growth for an independent artist end to end. All front and backend, including website, newsletter, outreach, and short & long form content are created in-house. That content brought us over **2.1** **million** **organic** **views,** and together with local press including Fritz Radio and Kickdrum Mag, took lovelee from zero audience in November 2025 to **65,000+** **streams** and **6,914** **monthly** **listeners** across **23+** **countries,** with no label and a small budget. Our Meta ads per-song run at around **€0.13** **per** **click,** with more than one in five listeners saving the song. Every campaign follows the same tested process, so results are measurable and repeatable.' },
+      { img: 'rfm-header.webp',    label: 'Rat für Migration', url: 'https://rat-fuer-migration.de', media: ['rfm60.webp','rfm61.webp','rfm62.webp','rfm63.webp','rfm66.webp','rfm67.webp','rfm68.webp'], desc: 'Official event photography, and poster design, for Rat für Migration\'s annual conference, "X Jahre Postmigration", a three-day event in Berlin funded by the Freudenberg Stiftung. Working directly with the organization\'s general management, we covered talks, panels and venue atmosphere across multiple locations in Berlin, including the Museum der „Trostfrauen", Humboldt University and the Kapelle am Urban. The post-production was handled entirely in-house, with the final images delivered within a short turnaround and in time to be used across the organization\'s website and social media.' },
+      { img: 'padel.webp',         label: 'Playground Padel',  url: 'https://playgroundpadel.de',    upcoming: true, desc: 'We\'re currently developing the social presence for Playground Padel, an upcoming padel project in Berlin. From creative direction and social strategy to content production and launch, we\'re building the project\'s digital identity from the ground up. More to come.' },
+      { img: 'trgrs.webp',         label: 'TRGRS Studios',     url: 'https://trgrs.de',               upcoming: true, desc: 'We\'re currently shaping a new digital identity for TRGRS Studios, rethinking how the Berlin studio space presents itself online. From creative direction and visual language to social strategy and content production, we\'re developing a new look and feel that better reflects the studio, its spaces and the work created within them.' },
     ];
 
     let currentDetailIndex = 0;
@@ -534,15 +613,89 @@
 
         // build detail view
         document.getElementById('work-grid').classList.add('detail-open');
-        detailView.innerHTML = `<img src="${project.img}" alt="${project.label}">`;
         detailView.style.display = 'flex';
         detailView.style.animation = 'panelFadeIn 0.35s cubic-bezier(0.22,1,0.36,1) forwards';
 
+        // top row: optional upcoming tag + image + text
+        const topRow = document.createElement('div');
+        topRow.className = 'detail-top';
+
+        if (project.upcoming) {
+          const tag = document.createElement('span');
+          tag.className = 'upcoming-tag';
+          tag.textContent = '↗ upcoming project';
+          topRow.appendChild(tag);
+        }
+
+        const innerRow = document.createElement('div');
+        innerRow.className = 'detail-top-row';
+        const img = document.createElement('img');
+        img.src = project.img;
+        img.alt = project.label;
+        innerRow.appendChild(img);
         const panel = document.createElement('div');
         panel.id = 'inline-detail';
-        detailView.appendChild(panel);
+        innerRow.appendChild(panel);
+        topRow.appendChild(innerRow);
+        detailView.appendChild(topRow);
         updateDetailPanel(panel, project);
         panel.style.animation = 'panelFadeIn 0.4s 0.1s cubic-bezier(0.22,1,0.36,1) forwards';
+
+        // gallery row (if project has media) — autoscrolling loop
+        if (project.media) {
+          const ITEM_W = 260, GAP = 12, COPIES = 4;
+          const N = project.media.length;
+          const SET_PX = N * ITEM_W + N * GAP;
+
+          function makeItem(src) {
+            let el;
+            if (src.endsWith('.mp4') || src.endsWith('.webm')) {
+              el = document.createElement('video');
+              el.setAttribute('src', src);
+              el.setAttribute('autoplay', '');
+              el.setAttribute('muted', '');
+              el.setAttribute('loop', '');
+              el.setAttribute('playsinline', '');
+            } else {
+              el = document.createElement('img');
+              el.src = src;
+              el.loading = 'lazy';
+              el.decoding = 'async';
+            }
+            el.style.objectFit = 'cover';
+            el.style.display = 'block';
+
+            // CD cover has white padding — wrap in overflow:hidden and scale up
+            if (src === 'lovelee7.webp') {
+              const wrap = document.createElement('div');
+              wrap.style.cssText = `width:${ITEM_W}px;height:300px;overflow:hidden;flex-shrink:0;display:flex;align-items:center;justify-content:center;`;
+              el.style.width = '140%';
+              el.style.height = '140%';
+              el.style.flexShrink = '0';
+              wrap.appendChild(el);
+              return wrap;
+            }
+
+            el.style.width = ITEM_W + 'px';
+            el.style.height = '300px';
+            el.style.flexShrink = '0';
+            return el;
+          }
+
+          const gallery = document.createElement('div');
+          gallery.className = 'detail-gallery';
+          for (let c = 0; c < COPIES; c++) {
+            project.media.forEach(src => gallery.appendChild(makeItem(src)));
+          }
+
+          gallery.style.setProperty('--gallery-set-width', `-${SET_PX}px`);
+          gallery.style.animation = `galleryScroll ${N * 6}s linear infinite`;
+
+          const wrap = document.createElement('div');
+          wrap.className = 'detail-gallery-wrap';
+          wrap.appendChild(gallery);
+          detailView.appendChild(wrap);
+        }
       }, 160);
     }
 
@@ -582,7 +735,11 @@
       const descEl = panel.querySelector('.detail-desc');
       const linkEl = panel.querySelector('.detail-link');
       labelEl.textContent = project.label;
-      descEl.innerHTML = project.desc.split(' ').map(w => `<span class="desc-char">${w}</span>`).join(' ');
+      descEl.innerHTML = project.desc.split(' ').map(w => {
+        const bold = w.startsWith('**') && w.endsWith('**');
+        const text = bold ? w.slice(2, -2) : w;
+        return `<span class="desc-char"${bold ? ' style="font-weight:700"' : ''}>${text}</span>`;
+      }).join(' ');
       attachDescEffect(descEl);
       linkEl.style.opacity = '1';
     }
@@ -617,6 +774,7 @@
       workRow.innerHTML = repeated.map((p, i) =>
         `<div class="work-item" data-index="${i % N}">
           <img src="${p.img}" alt="${p.label}">
+          ${p.upcoming ? '<span class="dog-ear">↗ upcoming</span>' : ''}
           <span class="work-label">${p.label}</span>
         </div>`
       ).join('');
@@ -654,6 +812,7 @@
     document.getElementById('work-row-clip').addEventListener('wheel', e => {
       if (Math.abs(e.deltaX) < Math.abs(e.deltaY)) return;
       e.preventDefault();
+      e.stopPropagation();
       if (document.getElementById('inline-detail')) return;
       workRow.style.transition = 'none';
       setX(currentPx - e.deltaX, false);
