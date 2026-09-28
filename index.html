@@ -63,10 +63,13 @@
       position: fixed;
       top: 0; left: 0;
       padding: 32px 40px;
-      z-index: 10;
+      z-index: 100;
       opacity: 0;
       transition: opacity 0.5s ease;
+      background: linear-gradient(to bottom, var(--blue) 60%, transparent);
+      pointer-events: none;
     }
+    nav img, nav #lang-switcher { pointer-events: auto; }
     nav.visible { opacity: 1; }
 
     .nav-logo {
@@ -272,6 +275,33 @@
       width: 100%;
     }
 
+    #lang-switcher {
+      position: fixed;
+      top: 24px;
+      right: 40px;
+      display: flex;
+      gap: 12px;
+      z-index: 1000;
+    }
+
+    .lang-opt {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      color: var(--cream);
+      cursor: pointer;
+      opacity: 0.45;
+      transition: opacity 0.2s;
+    }
+
+    .lang-opt.active {
+      opacity: 1;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    .lang-opt:hover { opacity: 0.8; }
+
     .upcoming-tag {
       font-family: 'Space Mono', monospace;
       font-size: 11px;
@@ -471,12 +501,12 @@
     }
 
     @media (max-width: 600px) {
-      nav { padding: 20px 20px; width: 100%; display: flex; justify-content: center; }
-      .nav-logo { height: 32px; }
+      nav { padding: 20px; width: 100%; display: flex; justify-content: center; }
+      .nav-logo { height: 28px; }
       main { padding-top: 0; justify-content: center; }
-      .nav-links { gap: 32px; }
+      .nav-links { gap: 24px; font-size: 11px; }
 
-      .work-grid { width: 100%; gap: 16px; }
+      .work-grid { width: 100%; gap: 12px; }
 
       .work-row-clip {
         padding-left: 20px;
@@ -490,21 +520,30 @@
       .work-item { scroll-snap-align: start; }
 
       .work-item img {
-        width: 72vw;
+        width: 75vw;
         height: auto;
-        aspect-ratio: 4 / 5;
+        aspect-ratio: 3 / 4;
       }
 
+      .work-label {
+        font-size: 10px;
+        margin-top: 6px;
+      }
+
+      /* detail view stacks vertically on mobile */
       .work-detail-view {
         flex-direction: column;
-        gap: 16px;
-        width: 90vw;
+        gap: 20px;
+        width: 100vw;
+        padding: 0 20px;
+        box-sizing: border-box;
       }
 
       .work-detail-view img {
         width: 100%;
         height: auto;
-        aspect-ratio: 4 / 5;
+        aspect-ratio: 3 / 4;
+        transform: none !important;
       }
 
       #inline-detail {
@@ -512,24 +551,57 @@
         width: 100%;
       }
 
+      .detail-label {
+        font-size: 18px;
+      }
+
+      .detail-desc {
+        font-size: 11px;
+        line-height: 1.7;
+        letter-spacing: 0.02em;
+      }
+
+      .detail-link {
+        font-size: 12px;
+        margin-top: 12px;
+        display: inline-block;
+      }
+
+      .detail-top { gap: 8px; }
+      .detail-top-row { gap: 0; flex-direction: column; }
+
       .work-grid.detail-open {
         position: fixed;
         inset: 0;
         overflow-y: auto;
         -webkit-overflow-scrolling: touch;
         justify-content: flex-start;
-        padding: 100px 0 60px;
-        align-items: center;
+        padding: 80px 0 80px;
+        align-items: flex-start;
       }
 
-      .corner-shape {
-        position: fixed;
-        bottom: auto;
-        right: auto;
-        top: 62%;
-        left: 50%;
-        transform: translateX(-50%);
+      /* autoscroll gallery — smaller items on mobile */
+      .detail-gallery img,
+      .detail-gallery video {
+        width: 220px !important;
+        height: 260px !important;
       }
+
+      /* back arrow on mobile — fixed left-center only when detail is open */
+      .work-grid.detail-open #work-close {
+        position: fixed !important;
+        left: 16px !important;
+        top: 50% !important;
+        transform: translateY(-50%) !important;
+        margin-top: 0 !important;
+        z-index: 200;
+      }
+
+      .corner-shape { display: none; }
+
+      .upcoming-tag { font-size: 10px; }
+      .dog-ear { font-size: 8px; padding: 2px 6px; }
+      #lang-switcher { top: 18px; right: 20px; }
     }
   </style>
 </head>
@@ -539,6 +611,10 @@
 
   <nav>
     <img class="nav-logo" src="logo.webp" alt="Ponyhof">
+    <div id="lang-switcher">
+      <span id="lang-en" class="lang-opt active">En</span>
+      <span id="lang-de" class="lang-opt">De</span>
+    </div>
   </nav>
 
   <main>
@@ -586,7 +662,7 @@
 
 
     const projects = [
-      { img: 'kickz4.webp',       label: 'St.Pauli 3x3x3',   url: 'https://kickz.com',             media: ['kickz1.webp','kickz-nnb.webp','kickz5.webp','kickz-v1.mp4','kickz6.webp','kickz7.webp','kickz8.webp','kickz-v2.mp4'], desc: 'We built and ran social for St. Pauli KICKZ 3x3 from the ground up, producing all short-form photo and video content in-house and travelling with the team across the international FIBA 3x3 circuit. Within 10 months, we grew the account from zero to nearly **3,000** **followers,** while our Instagram Reels generated over **6** **million** **organic** **views** alone. We combined fast, on-the-ground tournament coverage with high-end content for the team, players and brand partners, building a social presence around a rapidly growing 3x3 project, with brand partners including Adidas, Kickz93 and Viva con Agua. The following year, the team became Baskets Bonn Telekom, with Deutsche Telekom coming on as main sponsor.' },
+      { img: 'kickz4.webp',       label: 'st. pauli kickz 3x3',   url: 'https://kickz.com',             media: ['kickz1.webp','kickz-nnb.webp','kickz5.webp','kickz-v1.mp4','kickz6.webp','kickz7.webp','kickz8.webp','kickz-v2.mp4'], desc: 'We built and ran social for St. Pauli KICKZ 3x3 from the ground up, producing all short-form photo and video content in-house and travelling with the team across the international FIBA 3x3 circuit. Within 10 months, we grew the account from zero to nearly **3,000** **followers,** while our Instagram Reels generated over **6** **million** **organic** **views** alone. We combined fast, on-the-ground tournament coverage with high-end content for the team, players and brand partners, building a social presence around a rapidly growing 3x3 project, with brand partners including Adidas, Kickz93 and Viva con Agua. The following year, the team became Baskets Bonn Telekom, with Deutsche Telekom coming on as main sponsor.' },
       { img: 'lovelee2.webp',       label: 'Lovelee',           url: 'https://itsloveleee.com',            media: ['lovelee1.webp','lovelee3.webp','lovelee7.webp','lovelee8.webp','lovelee-video.mp4'], desc: 'We run growth for an independent artist end to end. All front and backend, including website, newsletter, outreach, and short & long form content are created in-house. That content brought us over **2.1** **million** **organic** **views,** and together with local press including Fritz Radio and Kickdrum Mag, took lovelee from zero audience in November 2025 to **65,000+** **streams** and **6,914** **monthly** **listeners** across **23+** **countries,** with no label and a small budget. Our Meta ads per-song run at around **€0.13** **per** **click,** with more than one in five listeners saving the song. Every campaign follows the same tested process, so results are measurable and repeatable.' },
       { img: 'rfm-header.webp',    label: 'Rat für Migration', url: 'https://rat-fuer-migration.de', media: ['rfm60.webp','rfm61.webp','rfm62.webp','rfm63.webp','rfm66.webp','rfm67.webp','rfm68.webp'], desc: 'Official event photography, and poster design, for Rat für Migration\'s annual conference, "X Jahre Postmigration", a three-day event in Berlin funded by the Freudenberg Stiftung. Working directly with the organization\'s general management, we covered talks, panels and venue atmosphere across multiple locations in Berlin, including the Museum der „Trostfrauen", Humboldt University and the Kapelle am Urban. The post-production was handled entirely in-house, with the final images delivered within a short turnaround and in time to be used across the organization\'s website and social media.' },
       { img: 'padel.webp',         label: 'Playground Padel',  url: 'https://playgroundpadel.de',    upcoming: true, desc: 'We\'re currently developing the social presence for Playground Padel, an upcoming padel project in Berlin. From creative direction and social strategy to content production and launch, we\'re building the project\'s digital identity from the ground up. More to come.' },
@@ -601,6 +677,7 @@
     const detailView = document.getElementById('work-detail-view');
 
     function showDetail(project, clickedEl) {
+      history.pushState({ page: 'detail' }, '');
       currentDetailIndex = parseInt(clickedEl.dataset.index);
       currentDetailEl = clickedEl;
 
@@ -623,7 +700,7 @@
         if (project.upcoming) {
           const tag = document.createElement('span');
           tag.className = 'upcoming-tag';
-          tag.textContent = '↗ upcoming project';
+          tag.textContent = i18n[currentLang].upcoming_tag;
           topRow.appendChild(tag);
         }
 
@@ -711,6 +788,7 @@
     }
 
     function attachDescEffect(descEl) {
+      if (window.matchMedia('(hover: none)').matches) return;
       descEl.addEventListener('mousemove', e => {
         descEl.querySelectorAll('.desc-char').forEach(span => {
           const rect = span.getBoundingClientRect();
@@ -729,13 +807,14 @@
     function updateDetailPanel(panel, project) {
       panel.innerHTML = `
         <span class="detail-label"></span>
-        <p class="detail-desc"></p>
-        <a class="detail-link" href="${project.url}" target="_blank" style="opacity:0">visit ↗</a>`;
+        <p class="detail-desc" data-project="${project.label}"></p>
+        <a class="detail-link" href="${project.url}" target="_blank" style="opacity:0">${i18n[currentLang].visit}</a>`;
       const labelEl = panel.querySelector('.detail-label');
       const descEl = panel.querySelector('.detail-desc');
       const linkEl = panel.querySelector('.detail-link');
       labelEl.textContent = project.label;
-      descEl.innerHTML = project.desc.split(' ').map(w => {
+      const activeDesc = (projectsI18n[currentLang] && projectsI18n[currentLang][project.label]) || project.desc;
+      descEl.innerHTML = activeDesc.split(' ').map(w => {
         const bold = w.startsWith('**') && w.endsWith('**');
         const text = bold ? w.slice(2, -2) : w;
         return `<span class="desc-char"${bold ? ' style="font-weight:700"' : ''}>${text}</span>`;
@@ -774,7 +853,7 @@
       workRow.innerHTML = repeated.map((p, i) =>
         `<div class="work-item" data-index="${i % N}">
           <img src="${p.img}" alt="${p.label}">
-          ${p.upcoming ? '<span class="dog-ear">↗ upcoming</span>' : ''}
+          ${p.upcoming ? `<span class="dog-ear">${i18n[currentLang].upcoming_dog}</span>` : ''}
           <span class="work-label">${p.label}</span>
         </div>`
       ).join('');
@@ -790,11 +869,12 @@
     }
 
     function showWork() {
+      history.pushState({ page: 'collection' }, '');
       currentPx = 0;
       document.getElementById('work-close').classList.remove('visible');
       const label = document.getElementById('work-collection-label');
       label.textContent = '';
-      setTimeout(() => typewrite(label, 'curated collection', 45, () => {
+      setTimeout(() => typewrite(label, i18n[currentLang].collection, 45, () => {
         setTimeout(() => {
           renderAll();
           setX(0, false);
@@ -826,7 +906,16 @@
       nav.style.opacity = '0';
       main.style.opacity = '0';
       setTimeout(() => {
-        document.getElementById('work-grid').classList.remove('visible');
+        // fully reset detail state
+        const grid = document.getElementById('work-grid');
+        grid.classList.remove('visible', 'detail-open');
+        const existing = document.getElementById('work-detail-view');
+        if (existing) existing.remove();
+        const inlineDetail = document.getElementById('inline-detail');
+        if (inlineDetail) inlineDetail.remove();
+        currentDetailEl = null;
+        currentDetailIndex = 0;
+
         document.getElementById('contact-info').classList.remove('visible');
         document.getElementById('nav-links').style.display = 'flex';
         document.getElementById('nav-work').textContent = '';
@@ -884,15 +973,127 @@
 
     document.getElementById('work-close').addEventListener('click', () => {
       if (document.getElementById('inline-detail')) {
-        hideDetail();
+        history.back();
       } else {
-        goHome();
+        history.back();
       }
     });
 
+    // history state management
+    history.replaceState({ page: 'home' }, '');
+
+    window.addEventListener('popstate', e => {
+      const state = e.state || { page: 'home' };
+      if (state.page === 'detail') {
+        // going forward into detail — just show it (shouldn't normally fire)
+      } else if (state.page === 'collection') {
+        // came back from detail to collection
+        if (document.getElementById('inline-detail')) {
+          hideDetail();
+        }
+      } else {
+        // came back to home
+        if (document.getElementById('work-grid').classList.contains('visible')) {
+          const grid = document.getElementById('work-grid');
+          grid.classList.remove('visible', 'detail-open');
+          const existing = document.getElementById('work-detail-view');
+          if (existing) existing.remove();
+          const inlineDetail = document.getElementById('inline-detail');
+          if (inlineDetail) inlineDetail.remove();
+          currentDetailEl = null;
+          document.getElementById('contact-info').classList.remove('visible');
+          document.getElementById('nav-links').style.display = 'flex';
+          document.getElementById('nav-work').textContent = '';
+          document.getElementById('contact-btn').textContent = '';
+          typewriteNav();
+        }
+      }
+    });
+
+    const i18n = {
+      en: {
+        nav_work: 'work',
+        nav_contact: 'contact',
+        collection: 'curated collection',
+        visit: 'visit ↗',
+        upcoming_tag: '↗ upcoming project',
+        upcoming_dog: '↗ upcoming',
+      },
+      de: {
+        nav_work: 'arbeit',
+        nav_contact: 'kontakt',
+        collection: 'kuratierte sammlung',
+        visit: 'besuchen ↗',
+        upcoming_tag: '↗ kommendes projekt',
+        upcoming_dog: '↗ demnächst',
+      }
+    };
+
+    const projectsI18n = {
+      en: {
+        'st. pauli kickz 3x3': projects.find(p => p.label === 'st. pauli kickz 3x3').desc,
+        'Lovelee': projects.find(p => p.label === 'Lovelee').desc,
+        'Rat für Migration': projects.find(p => p.label === 'Rat für Migration').desc,
+        'Playground Padel': projects.find(p => p.label === 'Playground Padel').desc,
+        'TRGRS Studios': projects.find(p => p.label === 'TRGRS Studios').desc,
+      },
+      de: {
+        'st. pauli kickz 3x3': 'Wir haben das Social-Media-Profil für St. Pauli KICKZ 3x3 von Grund auf aufgebaut und betreut – alle Foto- und Videoinhalte wurden intern produziert, während wir das Team auf dem internationalen FIBA 3x3-Circuit begleitet haben. In zehn Monaten wuchs der Account von null auf knapp **3.000** **Follower,** während unsere Instagram Reels allein über **6** **Millionen** **organische** **Views** erzielten. Wir kombinierten schnelle Turnierberichterstattung mit hochwertigen Inhalten für Team, Spieler und Markenpartner – darunter Adidas, Kickz93 und Viva con Agua. Im darauffolgenden Jahr wurde das Team zu Baskets Bonn Telekom, mit der Deutschen Telekom als Hauptsponsor.',
+        'Lovelee': 'Wir betreuen das Wachstum einer unabhängigen Künstlerin von A bis Z. Website, Newsletter, Outreach sowie kurze und lange Formate werden vollständig intern erstellt. Diese Inhalte brachten über **2,1** **Millionen** **organische** **Views** und führten – zusammen mit lokaler Presse wie Fritz Radio und Kickdrum Mag – dazu, dass lovelee von null auf **65.000+** **Streams** und **6.914** **monatliche** **Hörer** in **23+** **Ländern** gewachsen ist, ohne Label und mit kleinem Budget. Unsere Meta-Anzeigen kosten etwa **€0,13** **pro** **Klick,** bei einer Save-Rate von mehr als einem von fünf Hörern. Jede Kampagne folgt demselben erprobten Prozess – messbar und wiederholbar.',
+        'Rat für Migration': 'Offizielle Eventfotografie und Plakatgestaltung für die Jahreskonferenz von Rat für Migration, „X Jahre Postmigration" – eine dreitägige Veranstaltung in Berlin, gefördert von der Freudenberg Stiftung. In direkter Zusammenarbeit mit der Geschäftsführung begleiteten wir Vorträge, Panels und Atmosphäre an verschiedenen Berliner Locations, darunter das Museum der „Trostfrauen", die Humboldt-Universität und die Kapelle am Urban. Die Postproduktion wurde vollständig intern abgewickelt und die fertigen Bilder pünktlich für Website und Social Media der Organisation geliefert.',
+        'Playground Padel': 'Wir entwickeln derzeit die Social-Präsenz für Playground Padel, ein aufstrebendes Padel-Projekt in Berlin. Von der kreativen Leitung über die Inhaltsstrategie bis hin zu Produktion und Launch bauen wir die digitale Identität des Projekts von Grund auf auf. Mehr demnächst.',
+        'TRGRS Studios': 'Wir gestalten gerade eine neue digitale Identität für TRGRS Studios und überdenken, wie sich der Berliner Studioraum online präsentiert. Von kreativer Leitung und Bildsprache über Social-Strategie bis hin zur Content-Produktion entwickeln wir einen neuen Look & Feel, der das Studio, seine Räume und die dort entstehende Arbeit besser widerspiegelt.',
+      }
+    };
+
+    let currentLang = 'en';
+
+    function setLang(lang) {
+      currentLang = lang;
+      const t = i18n[lang];
+      document.getElementById('lang-en').classList.toggle('active', lang === 'en');
+      document.getElementById('lang-de').classList.toggle('active', lang === 'de');
+
+      // update collection label if visible
+      const collectionLabel = document.getElementById('work-collection-label');
+      if (collectionLabel && collectionLabel.textContent) collectionLabel.textContent = t.collection;
+
+      // update nav if already typed
+      const navWork = document.getElementById('nav-work');
+      const navContact = document.getElementById('contact-btn');
+      if (navWork.textContent) navWork.textContent = t.nav_work;
+      if (navContact.textContent) navContact.textContent = t.nav_contact;
+
+      // update open detail panel if any
+      const openDetail = document.getElementById('inline-detail');
+      if (openDetail) {
+        const linkEl = openDetail.querySelector('.detail-link');
+        if (linkEl) linkEl.textContent = t.visit;
+        const descEl = openDetail.querySelector('.detail-desc');
+        if (descEl && descEl.dataset.project) {
+          const dDesc = projectsI18n[lang][descEl.dataset.project];
+          if (dDesc) {
+            descEl.innerHTML = dDesc.split(' ').map(w => {
+              const bold = w.startsWith('**') && w.endsWith('**');
+              const text = bold ? w.slice(2, -2) : w;
+              return `<span class="desc-char"${bold ? ' style="font-weight:700"' : ''}>${text}</span>`;
+            }).join(' ');
+          }
+        }
+      }
+
+      // update upcoming tags in detail view
+      document.querySelectorAll('.upcoming-tag').forEach(el => el.textContent = t.upcoming_tag);
+      document.querySelectorAll('.dog-ear').forEach(el => el.textContent = t.upcoming_dog);
+    }
+
+    document.getElementById('lang-en').addEventListener('click', () => setLang('en'));
+    document.getElementById('lang-de').addEventListener('click', () => setLang('de'));
+
     function typewriteNav() {
-      typewrite(document.getElementById('nav-work'), 'work', 80, () => {
-        setTimeout(() => typewrite(document.getElementById('contact-btn'), 'contact', 80), 120);
+      const t = i18n[currentLang];
+      typewrite(document.getElementById('nav-work'), t.nav_work, 80, () => {
+        setTimeout(() => typewrite(document.getElementById('contact-btn'), t.nav_contact, 80), 120);
       });
     }
 
