@@ -679,7 +679,7 @@
     const detailView = document.getElementById('work-detail-view');
 
     function showDetail(project, clickedEl) {
-      history.pushState({ page: 'detail' }, '');
+      history.pushState({ page: 'detail', label: project.label }, '', '#detail-' + encodeURIComponent(project.label));
       currentDetailIndex = parseInt(clickedEl.dataset.index);
       currentDetailEl = clickedEl;
 
@@ -897,32 +897,44 @@
       });
     }
 
-    function showWork() {
-      history.pushState({ page: 'collection' }, '');
+    function showWork(skipAnim) {
+      history.pushState({ page: 'collection' }, '', '#work');
       currentPx = 0;
       document.getElementById('work-close').classList.remove('visible');
       const label = document.getElementById('work-collection-label');
       label.textContent = '';
-      setTimeout(() => typewrite(label, i18n[currentLang].collection, 45, () => {
+      const doRender = () => {
+        renderAll();
+        setX(0, false);
+        // on mobile, start scrolled to the middle so left-swipe never hits the edge
+        if (window.innerWidth <= 600) {
+          const clip = document.getElementById('work-row-clip');
+          const itemW = 220 + 12; // width + gap
+          clip.scrollLeft = Math.floor(COPIES / 2) * N * itemW;
+        }
+        workRow.classList.remove('animating-in');
+        void workRow.offsetWidth;
+        workRow.classList.add('animating-in');
         setTimeout(() => {
-          renderAll();
-          setX(0, false);
-          workRow.classList.remove('animating-in');
-          void workRow.offsetWidth;
-          workRow.classList.add('animating-in');
-          setTimeout(() => {
-            document.getElementById('work-close').classList.add('visible');
-          }, 1400);
-        }, 700);
-      }), 150);
+          document.getElementById('work-close').classList.add('visible');
+        }, 1400);
+      };
+      if (skipAnim) {
+        doRender();
+      } else {
+        setTimeout(() => typewrite(label, i18n[currentLang].collection, 45, () => {
+          setTimeout(doRender, 700);
+        }), 150);
+      }
     }
 
-    // trackpad swipe — follow OS momentum events directly, no snap
-    document.getElementById('work-row-clip').addEventListener('wheel', e => {
+    // trackpad swipe — catch horizontal scroll anywhere on page while collection is open
+    document.addEventListener('wheel', e => {
+      const grid = document.getElementById('work-grid');
+      if (!grid.classList.contains('visible')) return;
+      if (document.getElementById('inline-detail')) return;
       if (Math.abs(e.deltaX) < Math.abs(e.deltaY)) return;
       e.preventDefault();
-      e.stopPropagation();
-      if (document.getElementById('inline-detail')) return;
       workRow.style.transition = 'none';
       setX(currentPx - e.deltaX, false);
     }, { passive: false });
@@ -956,7 +968,49 @@
     }
 
     document.querySelector('.nav-logo').style.cursor = 'pointer';
-    document.querySelector('.nav-logo').addEventListener('click', goHome);
+    document.querySelector('.nav-logo').addEventListener('click', () => {
+      history.pushState({ page: 'home' }, '', location.pathname);
+      goHome();
+    });
+
+    // restore state from URL hash on page load / refresh
+    function restoreFromHash() {
+      const hash = location.hash;
+      if (hash.startsWith('#detail-')) {
+        const label = decodeURIComponent(hash.slice(8));
+        const project = projects.find(p => p.label === label);
+        if (project) {
+          // show collection first (no anim), then open the detail
+          showWorkInstant();
+          setTimeout(() => {
+            const fakeEl = { dataset: { index: projects.indexOf(project) } };
+            showDetail(project, { dataset: { index: String(projects.indexOf(project)) } });
+          }, 100);
+          return;
+        }
+      }
+      if (hash === '#work') {
+        showWorkInstant();
+        return;
+      }
+    }
+
+    // show collection immediately (no typewrite delay) for hash restore
+    function showWorkInstant() {
+      const grid = document.getElementById('work-grid');
+      grid.classList.add('visible');
+      document.getElementById('work-row-wrap').style.display = 'flex';
+      document.getElementById('work-row-wrap').style.opacity = '1';
+      const label = document.getElementById('work-collection-label');
+      label.textContent = i18n[currentLang].collection;
+      renderAll();
+      setX(0, false);
+      if (window.innerWidth <= 600) {
+        const clip = document.getElementById('work-row-clip');
+        clip.scrollLeft = Math.floor(COPIES / 2) * N * (220 + 12);
+      }
+      document.getElementById('work-close').classList.add('visible');
+    }
 
     // loader sequence on page load
     (function initLoader() {
@@ -977,6 +1031,7 @@
             main.style.opacity = '1';
             // "work" = 4 chars × 80ms + 120ms gap + "contact" = 7 chars × 80ms ≈ 1080ms total
             typewriteNav();
+            restoreFromHash();
             setTimeout(() => {
               document.querySelector('.corner-shape').classList.add('visible');
               const cv = document.getElementById('corner-video');
@@ -1015,7 +1070,7 @@
     });
 
     // history state management
-    history.replaceState({ page: 'home' }, '');
+    history.replaceState({ page: 'home' }, '', location.pathname);
 
     document.addEventListener('visibilitychange', () => {
       if (!document.hidden) {
