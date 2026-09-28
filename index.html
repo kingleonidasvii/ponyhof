@@ -517,11 +517,11 @@
         overscroll-behavior-x: contain;
       }
       .work-row-clip::-webkit-scrollbar { display: none; }
-      .work-row { min-width: max-content; transform: none !important; }
-      .work-item { scroll-snap-align: start; flex-shrink: 0; }
+      .work-row { transform: none !important; }
+      .work-item { scroll-snap-align: start; flex-shrink: 0; width: 75vw; }
 
       .work-item img {
-        width: 75vw;
+        width: 100%;
         height: auto;
         aspect-ratio: 3 / 4;
       }
@@ -886,6 +886,14 @@
           <span class="work-label">${p.label}</span>
         </div>`
       ).join('');
+      // on mobile, explicitly set work-row width so iOS Safari doesn't collapse flex
+      if (window.innerWidth <= 600) {
+        const mobileItemW = window.innerWidth * 0.75;
+        const mobileGap = 16;
+        workRow.style.width = (COPIES * N * (mobileItemW + mobileGap)) + 'px';
+      } else {
+        workRow.style.width = '';
+      }
       workRow.querySelectorAll('.work-item').forEach(el => {
         el.addEventListener('click', () => {
           if (document.getElementById('inline-detail')) {
@@ -909,8 +917,8 @@
         // on mobile, start scrolled to the middle so left-swipe never hits the edge
         if (window.innerWidth <= 600) {
           const clip = document.getElementById('work-row-clip');
-          const itemW = 220 + 12; // width + gap
-          clip.scrollLeft = Math.floor(COPIES / 2) * N * itemW;
+          const mobileItemW = window.innerWidth * 0.75 + 16;
+          clip.scrollLeft = Math.floor(COPIES / 2) * N * mobileItemW;
         }
         workRow.classList.remove('animating-in');
         void workRow.offsetWidth;
@@ -1011,7 +1019,8 @@
       setX(0, false);
       if (window.innerWidth <= 600) {
         const clip = document.getElementById('work-row-clip');
-        clip.scrollLeft = Math.floor(COPIES / 2) * N * (220 + 12);
+        const mobileItemW2 = window.innerWidth * 0.75 + 16;
+        clip.scrollLeft = Math.floor(COPIES / 2) * N * mobileItemW2;
       }
       document.getElementById('work-close').classList.add('visible');
     }
@@ -1088,16 +1097,19 @@
     });
 
     window.addEventListener('popstate', e => {
-      const state = e.state || { page: 'home' };
-      if (state.page === 'detail') {
-        // going forward into detail — just show it (shouldn't normally fire)
-      } else if (state.page === 'collection') {
+      const hash = location.hash;
+      // use hash as source of truth — state objects can be stale after replaceState
+      if (hash.startsWith('#detail-')) {
+        // arrived at a detail — shouldn't need handling (forward nav)
+      } else if (hash === '#work') {
         // came back from detail to collection
         if (document.getElementById('inline-detail')) {
           hideDetail();
+        } else if (!document.getElementById('work-grid').classList.contains('visible')) {
+          showWorkInstant();
         }
       } else {
-        // came back to home
+        // came back to home (empty hash)
         if (document.getElementById('work-grid').classList.contains('visible')) {
           const grid = document.getElementById('work-grid');
           grid.classList.remove('visible', 'detail-open');
