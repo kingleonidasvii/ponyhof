@@ -679,7 +679,7 @@
     const detailView = document.getElementById('work-detail-view');
 
     function showDetail(project, clickedEl) {
-      history.pushState({ page: 'detail', label: project.label }, '', '#detail-' + encodeURIComponent(project.label));
+      history.pushState({ page: 'detail', label: project.label }, '', '#detail-' + project.label.replace(/\s+/g, '-'));
       currentDetailIndex = parseInt(clickedEl.dataset.index);
       currentDetailEl = clickedEl;
 
@@ -977,8 +977,8 @@
     function restoreFromHash() {
       const hash = location.hash;
       if (hash.startsWith('#detail-')) {
-        const label = decodeURIComponent(hash.slice(8));
-        const project = projects.find(p => p.label === label);
+        const slug = hash.slice(8);
+        const project = projects.find(p => p.label.replace(/\s+/g, '-') === slug);
         if (project) {
           // show collection first (no anim), then open the detail
           showWorkInstant();
@@ -997,12 +997,16 @@
 
     // show collection immediately (no typewrite delay) for hash restore
     function showWorkInstant() {
+      document.getElementById('nav-links').style.display = 'none';
       const grid = document.getElementById('work-grid');
       grid.classList.add('visible');
-      document.getElementById('work-row-wrap').style.display = 'flex';
-      document.getElementById('work-row-wrap').style.opacity = '1';
+      const wrap = document.getElementById('work-row-wrap');
+      wrap.style.transition = 'none';
+      wrap.style.display = 'flex';
+      wrap.style.opacity = '1';
       const label = document.getElementById('work-collection-label');
       label.textContent = i18n[currentLang].collection;
+      currentPx = 0;
       renderAll();
       setX(0, false);
       if (window.innerWidth <= 600) {
@@ -1070,7 +1074,7 @@
     });
 
     // history state management
-    history.replaceState({ page: 'home' }, '', location.pathname);
+    history.replaceState({ page: 'home' }, '', location.pathname + location.hash);
 
     document.addEventListener('visibilitychange', () => {
       if (!document.hidden) {
