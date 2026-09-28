@@ -720,7 +720,7 @@
 
         // gallery row (if project has media) — autoscrolling loop
         if (project.media) {
-          const ITEM_W = 260, GAP = 12, COPIES = 4;
+          const ITEM_W = window.innerWidth <= 600 ? 220 : 260, GAP = 12, COPIES = 4;
           const N = project.media.length;
           const SET_PX = N * ITEM_W + N * GAP;
 
@@ -733,6 +733,9 @@
               el.setAttribute('muted', '');
               el.setAttribute('loop', '');
               el.setAttribute('playsinline', '');
+              el.setAttribute('preload', 'auto');
+              el.muted = true;
+              el.addEventListener('canplay', () => el.play().catch(() => {}), { once: true });
             } else {
               el = document.createElement('img');
               el.src = src;
@@ -742,10 +745,14 @@
             el.style.objectFit = 'cover';
             el.style.display = 'block';
 
+            const isMobile = window.innerWidth <= 600;
+            const itemW = isMobile ? 220 : ITEM_W;
+            const itemH = isMobile ? 260 : 300;
+
             // CD cover has white padding — wrap in overflow:hidden and scale up
             if (src === 'lovelee7.webp') {
               const wrap = document.createElement('div');
-              wrap.style.cssText = `width:${ITEM_W}px;height:300px;overflow:hidden;flex-shrink:0;display:flex;align-items:center;justify-content:center;`;
+              wrap.style.cssText = `width:${itemW}px;height:${itemH}px;overflow:hidden;flex-shrink:0;display:flex;align-items:center;justify-content:center;`;
               el.style.width = '140%';
               el.style.height = '140%';
               el.style.flexShrink = '0';
@@ -753,8 +760,8 @@
               return wrap;
             }
 
-            el.style.width = ITEM_W + 'px';
-            el.style.height = '300px';
+            el.style.width = itemW + 'px';
+            el.style.height = itemH + 'px';
             el.style.flexShrink = '0';
             return el;
           }
