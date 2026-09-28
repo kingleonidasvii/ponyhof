@@ -517,7 +517,8 @@
         overscroll-behavior-x: contain;
       }
       .work-row-clip::-webkit-scrollbar { display: none; }
-      .work-item { scroll-snap-align: start; }
+      .work-row { min-width: max-content; transform: none !important; }
+      .work-item { scroll-snap-align: start; flex-shrink: 0; }
 
       .work-item img {
         width: 75vw;
@@ -663,7 +664,7 @@
 
     const projects = [
       { img: 'kickz4.webp',       label: 'st. pauli kickz 3x3',   url: 'https://kickz.com',             media: ['kickz1.webp','kickz-nnb.webp','kickz5.webp','kickz-v1.mp4','kickz6.webp','kickz7.webp','kickz8.webp','kickz-v2.mp4'], desc: 'We built and ran social for St. Pauli KICKZ 3x3 from the ground up, producing all short-form photo and video content in-house and travelling with the team across the international FIBA 3x3 circuit. Within 10 months, we grew the account from zero to nearly **3,000** **followers,** while our Instagram Reels generated over **6** **million** **organic** **views** alone. We combined fast, on-the-ground tournament coverage with high-end content for the team, players and brand partners, building a social presence around a rapidly growing 3x3 project, with brand partners including Adidas, Kickz93 and Viva con Agua. The following year, the team became Baskets Bonn Telekom, with Deutsche Telekom coming on as main sponsor.' },
-      { img: 'lovelee2.webp',       label: 'Lovelee',           url: 'https://itsloveleee.com',            media: ['lovelee1.webp','lovelee3.webp','lovelee7.webp','lovelee8.webp','lovelee-video.mp4'], desc: 'We run growth for an independent artist end to end. All front and backend, including website, newsletter, outreach, and short & long form content are created in-house. That content brought us over **2.1** **million** **organic** **views,** and together with local press including Fritz Radio and Kickdrum Mag, took lovelee from zero audience in November 2025 to **65,000+** **streams** and **6,914** **monthly** **listeners** across **23+** **countries,** with no label and a small budget. Our Meta ads per-song run at around **€0.13** **per** **click,** with more than one in five listeners saving the song. Every campaign follows the same tested process, so results are measurable and repeatable.' },
+      { img: 'lovelee2.webp',       label: 'Lovelee',           url: 'https://itsloveleee.com',            media: ['lovelee3.webp','lovelee-video.mp4','lovelee7.webp','lovelee1.webp','lovelee8.webp'], desc: 'We run growth for an independent artist end to end. All front and backend, including website, newsletter, outreach, and short & long form content are created in-house. That content brought us over **2.1** **million** **organic** **views,** and together with local press including Fritz Radio and Kickdrum Mag, took lovelee from zero audience in November 2025 to **65,000+** **streams** and **6,914** **monthly** **listeners** across **23+** **countries,** with no label and a small budget. Our Meta ads per-song run at around **€0.13** **per** **click,** with more than one in five listeners saving the song. Every campaign follows the same tested process, so results are measurable and repeatable.' },
       { img: 'rfm-header.webp',    label: 'Rat für Migration', url: 'https://rat-fuer-migration.de', media: ['rfm60.webp','rfm61.webp','rfm62.webp','rfm63.webp','rfm66.webp','rfm67.webp','rfm68.webp'], desc: 'Official event photography, and poster design, for Rat für Migration\'s annual conference, "X Jahre Postmigration", a three-day event in Berlin funded by the Freudenberg Stiftung. Working directly with the organization\'s general management, we covered talks, panels and venue atmosphere across multiple locations in Berlin, including the Museum der „Trostfrauen", Humboldt University and the Kapelle am Urban. The post-production was handled entirely in-house, with the final images delivered within a short turnaround and in time to be used across the organization\'s website and social media.' },
       { img: 'padel.webp',         label: 'Playground Padel',  url: 'https://playgroundpadel.de',    upcoming: true, desc: 'We\'re currently developing the social presence for Playground Padel, an upcoming padel project in Berlin. From creative direction and social strategy to content production and launch, we\'re building the project\'s digital identity from the ground up. More to come.' },
       { img: 'trgrs.webp',         label: 'TRGRS Studios',     url: 'https://trgrs.de',               upcoming: true, desc: 'We\'re currently shaping a new digital identity for TRGRS Studios, rethinking how the Berlin studio space presents itself online. From creative direction and visual language to social strategy and content production, we\'re developing a new look and feel that better reflects the studio, its spaces and the work created within them.' },
@@ -735,11 +736,11 @@
               el.setAttribute('playsinline', '');
               el.setAttribute('preload', 'auto');
               el.muted = true;
+              el.volume = 0;
               el.addEventListener('canplay', () => el.play().catch(() => {}), { once: true });
             } else {
               el = document.createElement('img');
               el.src = src;
-              el.loading = 'lazy';
               el.decoding = 'async';
             }
             el.style.objectFit = 'cover';
@@ -773,7 +774,20 @@
           }
 
           gallery.style.setProperty('--gallery-set-width', `-${SET_PX}px`);
-          gallery.style.animation = `galleryScroll ${N * 6}s linear infinite`;
+          // start animation after first set of images ready (avoids blank-flash on mobile)
+          const firstImgs = Array.from(gallery.querySelectorAll('img')).slice(0, N);
+          let loaded = 0;
+          const startAnim = () => {
+            gallery.style.animation = `galleryScroll ${N * 6}s linear infinite`;
+          };
+          if (firstImgs.length === 0) {
+            startAnim();
+          } else {
+            firstImgs.forEach(img => {
+              if (img.complete) { if (++loaded >= firstImgs.length) startAnim(); }
+              else { img.addEventListener('load', () => { if (++loaded >= firstImgs.length) startAnim(); }, { once: true }); img.addEventListener('error', () => { if (++loaded >= firstImgs.length) startAnim(); }, { once: true }); }
+            });
+          }
 
           const wrap = document.createElement('div');
           wrap.className = 'detail-gallery-wrap';
@@ -1027,7 +1041,7 @@
         upcoming_dog: '↗ upcoming',
       },
       de: {
-        nav_work: 'arbeit',
+        nav_work: 'projekte',
         nav_contact: 'kontakt',
         collection: 'kuratierte sammlung',
         visit: 'besuchen ↗',
