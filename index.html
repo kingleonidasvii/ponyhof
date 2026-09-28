@@ -958,8 +958,8 @@
         // fully reset detail state
         const grid = document.getElementById('work-grid');
         grid.classList.remove('visible', 'detail-open');
-        const existing = document.getElementById('work-detail-view');
-        if (existing) existing.remove();
+        detailView.style.display = 'none';
+        detailView.innerHTML = '';
         const inlineDetail = document.getElementById('inline-detail');
         if (inlineDetail) inlineDetail.remove();
         currentDetailEl = null;
@@ -1113,8 +1113,8 @@
         if (document.getElementById('work-grid').classList.contains('visible')) {
           const grid = document.getElementById('work-grid');
           grid.classList.remove('visible', 'detail-open');
-          const existing = document.getElementById('work-detail-view');
-          if (existing) existing.remove();
+          detailView.style.display = 'none';
+          detailView.innerHTML = '';
           const inlineDetail = document.getElementById('inline-detail');
           if (inlineDetail) inlineDetail.remove();
           currentDetailEl = null;
