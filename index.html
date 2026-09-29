@@ -507,7 +507,7 @@
       animation: chevronSlide 0.5s ease-in-out infinite;
     }
 
-    @media (max-width: 600px) {
+    @media (max-width: 900px), (pointer: coarse) {
       nav { padding: 20px; width: 100%; display: flex; justify-content: center; }
       .nav-logo { height: 28px; }
       main { padding-top: 0; justify-content: center; }
@@ -736,7 +736,7 @@
 
         // gallery row (if project has media) — autoscrolling loop
         if (project.media) {
-          const ITEM_W = window.innerWidth <= 600 ? 220 : 260, GAP = 12, COPIES = 4;
+          const ITEM_W = window.innerWidth <= 900 || window.matchMedia("(pointer: coarse)").matches ? 220 : 260, GAP = 12, COPIES = 4;
           const N = project.media.length;
           const SET_PX = N * ITEM_W + N * GAP;
 
@@ -761,7 +761,7 @@
             el.style.objectFit = 'cover';
             el.style.display = 'block';
 
-            const isMobile = window.innerWidth <= 600;
+            const isMobile = window.innerWidth <= 900 || window.matchMedia("(pointer: coarse)").matches;
             const itemW = isMobile ? 220 : ITEM_W;
             const itemH = isMobile ? 260 : 300;
 
@@ -903,7 +903,7 @@
         </div>`
       ).join('');
       // on mobile, explicitly set work-row width so iOS Safari doesn't collapse flex
-      if (window.innerWidth <= 600) {
+      if (window.innerWidth <= 900 || window.matchMedia("(pointer: coarse)").matches) {
         const mobileItemW = window.innerWidth * 0.75;
         const mobileGap = 16;
         workRow.style.width = (COPIES * N * (mobileItemW + mobileGap)) + 'px';
@@ -931,7 +931,7 @@
         renderAll();
         setX(0, false);
         // on mobile, start scrolled to the middle so left-swipe never hits the edge
-        if (window.innerWidth <= 600) {
+        if (window.innerWidth <= 900 || window.matchMedia("(pointer: coarse)").matches) {
           const clip = document.getElementById('work-row-clip');
           const mobileItemW = window.innerWidth * 0.75 + 16;
           clip.scrollLeft = Math.floor(COPIES / 2) * N * mobileItemW;
@@ -952,8 +952,9 @@
       }
     }
 
-    // trackpad swipe — catch horizontal scroll anywhere on page while collection is open
+    // trackpad swipe — catch horizontal scroll anywhere on page while collection is open (desktop only)
     document.addEventListener('wheel', e => {
+      if (window.innerWidth <= 900 || window.matchMedia('(pointer: coarse)').matches) return; // narrow/touch: native scroll
       const grid = document.getElementById('work-grid');
       if (!grid.classList.contains('visible')) return;
       if (document.getElementById('inline-detail')) return;
@@ -1034,7 +1035,7 @@
       currentPx = 0;
       renderAll();
       setX(0, false);
-      if (window.innerWidth <= 600) {
+      if (window.innerWidth <= 900 || window.matchMedia("(pointer: coarse)").matches) {
         const clip = document.getElementById('work-row-clip');
         const mobileItemW2 = window.innerWidth * 0.75 + 16;
         clip.scrollLeft = Math.floor(COPIES / 2) * N * mobileItemW2;
