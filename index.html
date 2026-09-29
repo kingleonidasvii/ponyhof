@@ -354,12 +354,17 @@
       flex-shrink: 0;
     }
 
-    .detail-gallery video {
+    .detail-gallery .video-wrap {
       background: var(--cream);
+      overflow: hidden;
+      flex-shrink: 0;
+      display: flex;
+    }
+    .detail-gallery .video-wrap video {
       opacity: 0;
       transition: opacity 0.4s ease;
     }
-    .detail-gallery video.ready { opacity: 1; }
+    .detail-gallery .video-wrap video.ready { opacity: 1; }
 
     .work-detail-view img {
       width: 240px;
@@ -596,7 +601,8 @@
 
       /* autoscroll gallery — smaller items on mobile */
       .detail-gallery img,
-      .detail-gallery video {
+      .detail-gallery .video-wrap,
+      .detail-gallery .video-wrap video {
         width: 220px !important;
         height: 260px !important;
       }
@@ -762,6 +768,15 @@
               el.muted = true;
               el.volume = 0;
               el.addEventListener('canplay', () => el.classList.add('ready'), { once: true });
+              const isMobileV = window.innerWidth <= 900 || window.matchMedia("(pointer: coarse)").matches;
+              const vW = isMobileV ? 220 : ITEM_W;
+              const vH = isMobileV ? 260 : 300;
+              el.style.cssText = `width:${vW}px;height:${vH}px;object-fit:cover;display:block;flex-shrink:0;`;
+              const wrap = document.createElement('div');
+              wrap.className = 'video-wrap';
+              wrap.style.cssText = `width:${vW}px;height:${vH}px;`;
+              wrap.appendChild(el);
+              return wrap;
             } else {
               el = document.createElement('img');
               el.src = src;
