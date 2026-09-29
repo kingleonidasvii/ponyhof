@@ -505,6 +505,7 @@
       display: block;
       opacity: 0;
       transition: opacity 0.6s ease;
+      mix-blend-mode: screen;
     }
     .corner-shape.visible video { opacity: 1; }
 
@@ -624,7 +625,7 @@
         border-radius: 4px !important;
       }
 
-      .corner-shape { display: block; bottom: 20px; right: 20px; mix-blend-mode: normal; }
+      .corner-shape { display: block; bottom: 20px; right: 20px; mix-blend-mode: screen; }
     }
     @media (max-width: 900px) and (min-width: 601px) {
       .corner-shape { display: none; }
