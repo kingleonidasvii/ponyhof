@@ -1114,6 +1114,26 @@
       }
     });
 
+    // re-render carousel when crossing the 900px layout breakpoint
+    let lastIsMobile = window.innerWidth <= 900 || window.matchMedia('(pointer: coarse)').matches;
+    window.addEventListener('resize', () => {
+      const nowMobile = window.innerWidth <= 900 || window.matchMedia('(pointer: coarse)').matches;
+      if (nowMobile !== lastIsMobile) {
+        lastIsMobile = nowMobile;
+        if (document.getElementById('work-grid').classList.contains('visible') &&
+            !document.getElementById('inline-detail')) {
+          currentPx = 0;
+          renderAll();
+          setX(0, false);
+          if (nowMobile) {
+            const clip = document.getElementById('work-row-clip');
+            const mw = window.innerWidth * 0.75 + 16;
+            clip.scrollLeft = Math.floor(COPIES / 2) * N * mw;
+          }
+        }
+      }
+    });
+
     window.addEventListener('popstate', e => {
       const hash = location.hash;
       // use hash as source of truth — state objects can be stale after replaceState
