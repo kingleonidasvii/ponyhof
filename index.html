@@ -354,6 +354,13 @@
       flex-shrink: 0;
     }
 
+    .detail-gallery video {
+      background: var(--cream);
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+    .detail-gallery video.ready { opacity: 1; }
+
     .work-detail-view img {
       width: 240px;
       height: 300px;
@@ -481,6 +488,8 @@
       mix-blend-mode: screen;
     }
 
+    .corner-shape { background: var(--blue); }
+
     .corner-shape video {
       width: 80px;
       height: auto;
@@ -586,6 +595,10 @@
       .detail-gallery video {
         width: 220px !important;
         height: 260px !important;
+      }
+      .detail-gallery .cd-wrap img {
+        width: 140% !important;
+        height: 140% !important;
       }
 
       /* back arrow on mobile — fixed left-center only when detail is open */
@@ -738,6 +751,7 @@
               el.setAttribute('preload', 'auto');
               el.muted = true;
               el.volume = 0;
+              el.addEventListener('canplay', () => el.classList.add('ready'), { once: true });
             } else {
               el = document.createElement('img');
               el.src = src;
@@ -753,10 +767,9 @@
             // CD cover has white padding — wrap in overflow:hidden and scale up
             if (src === 'lovelee7.webp') {
               const wrap = document.createElement('div');
+              wrap.className = 'cd-wrap';
               wrap.style.cssText = `width:${itemW}px;height:${itemH}px;overflow:hidden;flex-shrink:0;display:flex;align-items:center;justify-content:center;`;
-              el.style.width = '140%';
-              el.style.height = '140%';
-              el.style.flexShrink = '0';
+              el.style.cssText = `width:140%;height:140%;flex-shrink:0;object-fit:cover;display:block;`;
               wrap.appendChild(el);
               return wrap;
             }
@@ -807,8 +820,10 @@
 
     function typewrite(el, text, speed, onDone) {
       el.textContent = '';
+      const gen = (el._twGen = (el._twGen || 0) + 1);
       let i = 0;
       const tick = () => {
+        if (el._twGen !== gen) return; // cancelled by a newer call
         el.textContent = text.slice(0, ++i);
         if (i < text.length) setTimeout(tick, speed);
         else if (onDone) onDone();
@@ -949,23 +964,24 @@
 
     // touch devices use native CSS scroll (see mobile media query)
 
+    let goHomeTimer = null;
     function goHome() {
+      if (goHomeTimer) clearTimeout(goHomeTimer);
       const nav = document.querySelector('nav');
       const main = document.querySelector('main');
+      // immediately clear any stale content so it doesn't flicker
+      document.getElementById('work-grid').classList.remove('visible', 'detail-open');
+      detailView.style.display = 'none';
+      detailView.innerHTML = '';
+      const inlineDetail = document.getElementById('inline-detail');
+      if (inlineDetail) inlineDetail.remove();
+      currentDetailEl = null;
+      currentDetailIndex = 0;
+      document.getElementById('contact-info').classList.remove('visible');
       nav.style.opacity = '0';
       main.style.opacity = '0';
-      setTimeout(() => {
-        // fully reset detail state
-        const grid = document.getElementById('work-grid');
-        grid.classList.remove('visible', 'detail-open');
-        detailView.style.display = 'none';
-        detailView.innerHTML = '';
-        const inlineDetail = document.getElementById('inline-detail');
-        if (inlineDetail) inlineDetail.remove();
-        currentDetailEl = null;
-        currentDetailIndex = 0;
-
-        document.getElementById('contact-info').classList.remove('visible');
+      goHomeTimer = setTimeout(() => {
+        goHomeTimer = null;
         document.getElementById('nav-links').style.display = 'flex';
         document.getElementById('nav-work').textContent = '';
         document.getElementById('contact-btn').textContent = '';
