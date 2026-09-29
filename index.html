@@ -1224,10 +1224,18 @@
     document.getElementById('lang-en').addEventListener('click', () => setLang('en'));
     document.getElementById('lang-de').addEventListener('click', () => setLang('de'));
 
+    let navGen = 0;
     function typewriteNav() {
+      const gen = ++navGen;
       const t = i18n[currentLang];
+      document.getElementById('nav-work').textContent = '';
+      document.getElementById('contact-btn').textContent = '';
       typewrite(document.getElementById('nav-work'), t.nav_work, 80, () => {
-        setTimeout(() => typewrite(document.getElementById('contact-btn'), t.nav_contact, 80), 120);
+        if (navGen !== gen) return;
+        setTimeout(() => {
+          if (navGen !== gen) return;
+          typewrite(document.getElementById('contact-btn'), t.nav_contact, 80);
+        }, 120);
       });
     }
 
