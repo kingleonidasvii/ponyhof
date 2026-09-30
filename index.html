@@ -998,6 +998,9 @@
       const main = document.querySelector('main');
       // immediately clear any stale content so it doesn't flicker
       document.getElementById('work-grid').classList.remove('visible', 'detail-open');
+      const lbl = document.getElementById('work-collection-label');
+      lbl._twGen = (lbl._twGen || 0) + 1; // cancel any in-progress typewrite
+      lbl.textContent = '';
       detailView.style.display = 'none';
       detailView.innerHTML = '';
       const inlineDetail = document.getElementById('inline-detail');
@@ -1181,6 +1184,9 @@
         if (document.getElementById('work-grid').classList.contains('visible')) {
           const grid = document.getElementById('work-grid');
           grid.classList.remove('visible', 'detail-open');
+          const lbl2 = document.getElementById('work-collection-label');
+          lbl2._twGen = (lbl2._twGen || 0) + 1;
+          lbl2.textContent = '';
           detailView.style.display = 'none';
           detailView.innerHTML = '';
           const inlineDetail = document.getElementById('inline-detail');
