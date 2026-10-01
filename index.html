@@ -302,6 +302,51 @@
 
     .lang-opt:hover { opacity: 0.8; }
 
+    #impressum-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: var(--blue);
+      z-index: 2000;
+      overflow-y: auto;
+      padding: 60px 40px;
+    }
+    #impressum-overlay.visible { display: block; }
+    #impressum-content {
+      max-width: 600px;
+      margin: 0 auto;
+      font-family: 'Space Mono', monospace;
+      color: var(--cream);
+      font-size: 13px;
+      line-height: 1.8;
+    }
+    #impressum-content h2 {
+      font-size: clamp(22px, 3vw, 36px);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin: 0 0 24px;
+    }
+    #impressum-content h3 {
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      opacity: 0.6;
+      margin: 28px 0 6px;
+    }
+    #impressum-content p { margin: 0 0 8px; }
+    #impressum-content a { color: var(--cream); }
+    #impressum-close {
+      position: fixed;
+      top: 24px;
+      right: 40px;
+      font-size: 24px;
+      cursor: pointer;
+      color: var(--cream);
+      opacity: 0.6;
+      line-height: 1;
+    }
+    #impressum-close:hover { opacity: 1; }
+
     .upcoming-tag {
       font-family: 'Space Mono', monospace;
       font-size: 11px;
@@ -629,14 +674,14 @@
       }
 
       .corner-shape { display: block; bottom: 20px; right: 20px; mix-blend-mode: screen; }
+      #lang-switcher { top: 16px; right: 16px; gap: 6px; flex-direction: column; align-items: flex-end; }
+      .lang-opt:not(.active):not(#impressum-btn) { display: none; }
     }
     @media (max-width: 900px) and (min-width: 601px) {
       .corner-shape { display: none; }
       .corner-shape video { width: 56px; }
-
       .upcoming-tag { font-size: 10px; }
       .dog-ear { font-size: 8px; padding: 2px 6px; }
-      #lang-switcher { top: 18px; right: 20px; }
     }
   </style>
 </head>
@@ -649,8 +694,26 @@
     <div id="lang-switcher">
       <span id="lang-en" class="lang-opt active">En</span>
       <span id="lang-de" class="lang-opt">De</span>
+      <span id="impressum-btn" class="lang-opt">Impr.</span>
     </div>
   </nav>
+
+  <div id="impressum-overlay">
+    <div id="impressum-content">
+      <span id="impressum-close">×</span>
+      <h2>Impressum</h2>
+      <p>Angaben gemäß § 5 DDG</p>
+      <p>Leon Byvanck<br>c/o POSTFLEX PFX-881-696<br>Emsdettener Straße 10<br>48268 Greven<br>Deutschland</p>
+      <h3>Kontakt</h3>
+      <p>E-Mail: <a href="mailto:contact@ponyhof.studio">contact@ponyhof.studio</a></p>
+      <h3>Verbraucherstreitbeilegung</h3>
+      <p>Wir sind nicht bereit oder verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.</p>
+      <h3>Haftung für Inhalte</h3>
+      <p>Als Diensteanbieter sind wir gemäß § 9 Abs. 1 DDG für eigene Inhalte auf diesen Seiten nach den allgemeinen Gesetzen verantwortlich.</p>
+      <h3>Urheberrecht</h3>
+      <p>Die durch die Seitenbetreiber erstellten Inhalte und Werke auf diesen Seiten unterliegen dem deutschen Urheberrecht. Die Vervielfältigung, Bearbeitung, Verbreitung und jede Art der Verwertung außerhalb der Grenzen des Urheberrechtes bedürfen der schriftlichen Zustimmung des jeweiligen Autors bzw. Erstellers.</p>
+    </div>
+  </div>
 
   <main>
     <div class="nav-links" id="nav-links">
@@ -1224,6 +1287,17 @@
         visit: 'visit ↗',
         upcoming_tag: '↗ upcoming project',
         upcoming_dog: '↗ upcoming',
+        impressum: {
+          title: 'Legal Notice',
+          intro: 'Information according to § 5 DDG',
+          contact_h: 'Contact',
+          dispute_h: 'Consumer Dispute Resolution',
+          dispute: 'We are not willing or obliged to participate in dispute resolution proceedings before a consumer arbitration board.',
+          liability_h: 'Liability for Content',
+          liability: 'As a service provider, we are responsible for our own content on these pages in accordance with § 9 Para. 1 DDG under general law.',
+          copyright_h: 'Copyright',
+          copyright: 'The content and works on these pages created by the site operators are subject to German copyright law. Reproduction, processing, distribution and any kind of exploitation outside the limits of copyright law require the written consent of the respective author.',
+        },
       },
       de: {
         nav_work: 'projekte',
@@ -1232,6 +1306,17 @@
         visit: 'besuchen ↗',
         upcoming_tag: '↗ kommendes projekt',
         upcoming_dog: '↗ demnächst',
+        impressum: {
+          title: 'Impressum',
+          intro: 'Angaben gemäß § 5 DDG',
+          contact_h: 'Kontakt',
+          dispute_h: 'Verbraucherstreitbeilegung',
+          dispute: 'Wir sind nicht bereit oder verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.',
+          liability_h: 'Haftung für Inhalte',
+          liability: 'Als Diensteanbieter sind wir gemäß § 9 Abs. 1 DDG für eigene Inhalte auf diesen Seiten nach den allgemeinen Gesetzen verantwortlich.',
+          copyright_h: 'Urheberrecht',
+          copyright: 'Die durch die Seitenbetreiber erstellten Inhalte und Werke auf diesen Seiten unterliegen dem deutschen Urheberrecht. Die Vervielfältigung, Bearbeitung, Verbreitung und jede Art der Verwertung außerhalb der Grenzen des Urheberrechtes bedürfen der schriftlichen Zustimmung des jeweiligen Autors bzw. Erstellers.',
+        },
       }
     };
 
@@ -1291,10 +1376,41 @@
       // update upcoming tags in detail view
       document.querySelectorAll('.upcoming-tag').forEach(el => el.textContent = t.upcoming_tag);
       document.querySelectorAll('.dog-ear').forEach(el => el.textContent = t.upcoming_dog);
+
+      // re-render impressum if open
+      if (document.getElementById('impressum-overlay').classList.contains('visible')) {
+        renderImpressum(lang);
+      }
     }
 
-    document.getElementById('lang-en').addEventListener('click', () => setLang('en'));
-    document.getElementById('lang-de').addEventListener('click', () => setLang('de'));
+    function renderImpressum(lang) {
+      const imp = i18n[lang].impressum;
+      document.getElementById('impressum-content').innerHTML = `
+        <span id="impressum-close">×</span>
+        <h2>${imp.title}</h2>
+        <p>${imp.intro}</p>
+        <p>Leon Byvanck<br>c/o POSTFLEX PFX-881-696<br>Emsdettener Straße 10<br>48268 Greven<br>Deutschland</p>
+        <h3>${imp.contact_h}</h3>
+        <p>E-Mail: <a href="mailto:contact@ponyhof.studio">contact@ponyhof.studio</a></p>
+        <h3>${imp.dispute_h}</h3>
+        <p>${imp.dispute}</p>
+        <h3>${imp.liability_h}</h3>
+        <p>${imp.liability}</p>
+        <h3>${imp.copyright_h}</h3>
+        <p>${imp.copyright}</p>
+      `;
+      document.getElementById('impressum-close').addEventListener('click', () => {
+        document.getElementById('impressum-overlay').classList.remove('visible');
+      });
+    }
+
+    document.getElementById('lang-en').addEventListener('click', () => setLang(currentLang === 'en' ? 'de' : 'en'));
+    document.getElementById('lang-de').addEventListener('click', () => setLang(currentLang === 'de' ? 'en' : 'de'));
+
+    document.getElementById('impressum-btn').addEventListener('click', () => {
+      renderImpressum(currentLang);
+      document.getElementById('impressum-overlay').classList.add('visible');
+    });
 
     let navGen = 0;
     function typewriteNav() {
