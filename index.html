@@ -602,10 +602,13 @@
 
       /* autoscroll gallery — smaller items on mobile */
       .detail-gallery img,
-      .detail-gallery .video-wrap,
-      .detail-gallery .video-wrap video {
+      .detail-gallery .video-wrap {
         width: 220px !important;
         height: 260px !important;
+      }
+      .detail-gallery .video-wrap video {
+        width: 100% !important;
+        height: 100% !important;
       }
       .detail-gallery .cd-wrap img {
         width: 140% !important;
@@ -695,7 +698,7 @@
 
     const projects = [
       { img: 'kickz-cover.webp', detailImg: 'kickz-cover.webp', label: 'st. pauli kickz 3x3',   url: 'https://kickz.com',             media: ['kickz-a.webp','kickz-b.webp','kickz-v1.mp4','kickz-c.webp','kickz-d.webp','kickz-v2.mp4'], desc: 'We built and ran social for St. Pauli KICKZ 3x3 from the ground up, producing all short-form photo and video content in-house and travelling with the team across the international FIBA 3x3 circuit. Within 10 months, we grew the account from zero to nearly **3,000** **followers,** while our Instagram Reels generated over **6** **million** **organic** **views** alone. We combined fast, on-the-ground tournament coverage with high-end content for the team, players and brand partners, building a social presence around a rapidly growing 3x3 project, with brand partners including Adidas, Kickz93 and Viva con Agua. The following year, the team became Baskets Bonn Telekom, with Deutsche Telekom coming on as main sponsor.' },
-      { img: 'lovelee2.webp',       label: 'Lovelee',           url: 'https://itsloveleee.com',            media: ['lovelee3.webp','lovelee-video.mp4','lovelee7.webp','lovelee1.webp','lovelee8.webp'], desc: 'We run growth for an independent artist end to end. All front and backend, including website, newsletter, outreach, and short & long form content are created in-house. That content brought us over **2.1** **million** **organic** **views,** and together with local press including Fritz Radio and Kickdrum Mag, took lovelee from zero audience in November 2025 to **65,000+** **streams** and **6,914** **monthly** **listeners** across **23+** **countries,** with no label and a small budget. Our Meta ads per-song run at around **€0.13** **per** **click,** with more than one in five listeners saving the song. Every campaign follows the same tested process, so results are measurable and repeatable.' },
+      { img: 'lovelee2.webp',       label: 'Lovelee',           url: 'https://itsloveleee.com',            media: ['lovelee3.webp','lovelee-video.mp4','lovelee7.webp','lovelee1.webp','lovelee8.webp','lovelee-video2.mp4'], desc: 'We run growth for an independent artist end to end. All front and backend, including website, newsletter, outreach, and short & long form content are created in-house. That content brought us over **2.1** **million** **organic** **views,** and together with local press including Fritz Radio and Kickdrum Mag, took lovelee from zero audience in November 2025 to **65,000+** **streams** and **6,914** **monthly** **listeners** across **23+** **countries,** with no label and a small budget. Our Meta ads per-song run at around **€0.13** **per** **click,** with more than one in five listeners saving the song. Every campaign follows the same tested process, so results are measurable and repeatable.' },
       { img: 'rfm-header.webp', detailImg: 'rfm-poster.webp', label: 'Rat für Migration', url: 'https://rat-fuer-migration.de', media: ['rfm60.webp','rfm61.webp','rfm62.webp','rfm63.webp','rfm66.webp','rfm67.webp','rfm68.webp'], desc: 'Official event photography, and poster design, for Rat für Migration\'s annual conference, "X Jahre Postmigration", a three-day event in Berlin funded by the Freudenberg Stiftung. Working directly with the organization\'s general management, we covered talks, panels and venue atmosphere across multiple locations in Berlin, including the Museum der „Trostfrauen", Humboldt University and the Kapelle am Urban. The post-production was handled entirely in-house, with the final images delivered within a short turnaround and in time to be used across the organization\'s website and social media.' },
       { img: 'padel.webp',         label: 'Playground Padel',  url: 'https://playgroundpadel.de',    upcoming: true, desc: 'We\'re currently developing the social presence for Playground Padel, an upcoming padel project in Berlin. From creative direction and social strategy to content production and launch, we\'re building the project\'s digital identity from the ground up. More to come.' },
       { img: 'trgrs.webp',         label: 'TRGRS Studios',     url: 'https://trgrs.de',               upcoming: true, desc: 'We\'re currently shaping a new digital identity for TRGRS Studios, rethinking how the Berlin studio space presents itself online. From creative direction and visual language to social strategy and content production, we\'re developing a new look and feel that better reflects the studio, its spaces and the work created within them.' },
@@ -772,10 +775,11 @@
               const isMobileV = window.innerWidth <= 900 || window.matchMedia("(pointer: coarse)").matches;
               const vW = isMobileV ? 220 : ITEM_W;
               const vH = isMobileV ? 260 : 300;
-              el.style.cssText = `width:${vW}px;height:${vH}px;object-fit:cover;display:block;flex-shrink:0;`;
+              // video fills the wrap and is cropped — never stretched
+              el.style.cssText = `width:100%;height:100%;object-fit:cover;display:block;`;
               const wrap = document.createElement('div');
               wrap.className = 'video-wrap';
-              wrap.style.cssText = `width:${vW}px;height:${vH}px;`;
+              wrap.style.cssText = `width:${vW}px;height:${vH}px;overflow:hidden;`;
               wrap.appendChild(el);
               return wrap;
             } else {
@@ -1001,6 +1005,7 @@
       const lbl = document.getElementById('work-collection-label');
       lbl._twGen = (lbl._twGen || 0) + 1; // cancel any in-progress typewrite
       lbl.textContent = '';
+      document.getElementById('work-close').classList.remove('visible');
       detailView.style.display = 'none';
       detailView.innerHTML = '';
       const inlineDetail = document.getElementById('inline-detail');
@@ -1008,6 +1013,9 @@
       currentDetailEl = null;
       currentDetailIndex = 0;
       document.getElementById('contact-info').classList.remove('visible');
+      document.getElementById('close-btn').classList.remove('visible');
+      document.getElementById('contact-ig').textContent = '';
+      document.getElementById('contact-email').textContent = '';
       // reset work-row-wrap in case showDetail() hid it and hideDetail() was never called
       const wrap = document.getElementById('work-row-wrap');
       wrap.style.transition = 'none';
@@ -1048,8 +1056,13 @@
           return;
         }
       }
-      if (hash === '#work') {
-        showWorkInstant();
+      if (hash === '#work') { showWorkInstant(); return; }
+      if (hash === '#contact') {
+        document.getElementById('nav-links').style.display = 'none';
+        document.getElementById('contact-info').classList.add('visible');
+        document.getElementById('contact-ig').textContent = '@ponyhof.studio';
+        document.getElementById('contact-email').textContent = 'contact@ponyhof.studio';
+        document.getElementById('close-btn').classList.add('visible');
         return;
       }
     }
@@ -1170,7 +1183,9 @@
     window.addEventListener('popstate', e => {
       const hash = location.hash;
       // use hash as source of truth — state objects can be stale after replaceState
-      if (hash.startsWith('#detail-')) {
+      if (hash === '#contact') {
+        showContact();
+      } else if (hash.startsWith('#detail-')) {
         // arrived at a detail — shouldn't need handling (forward nav)
       } else if (hash === '#work') {
         // came back from detail to collection
@@ -1296,8 +1311,8 @@
       });
     }
 
-    document.getElementById('contact-btn').addEventListener('click', e => {
-      e.preventDefault();
+    function showContact() {
+      history.pushState({ page: 'contact' }, '', '#contact');
       document.getElementById('nav-links').style.display = 'none';
       const ig = document.getElementById('contact-ig');
       const email = document.getElementById('contact-email');
@@ -1309,14 +1324,16 @@
           setTimeout(() => document.getElementById('close-btn').classList.add('visible'), 200);
         }), 100);
       });
+    }
+
+    document.getElementById('contact-btn').addEventListener('click', e => {
+      e.preventDefault();
+      showContact();
     });
 
     document.getElementById('close-btn').addEventListener('click', () => {
-      document.getElementById('close-btn').classList.remove('visible');
-      document.getElementById('contact-info').classList.remove('visible');
-      document.getElementById('contact-ig').textContent = '';
-      document.getElementById('contact-email').textContent = '';
-      document.getElementById('nav-links').style.display = 'flex';
+      history.pushState({ page: 'home' }, '', location.pathname);
+      goHome();
     });
     // click outside work items / detail panel → go back
     document.getElementById('work-grid').addEventListener('click', e => {
