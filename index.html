@@ -4,9 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Ponyhof</title>
-  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
-  <link rel="apple-touch-icon" href="favicon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16.png">
+  <link rel="apple-touch-icon" href="images/favicon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
@@ -25,7 +25,7 @@
       inset: 0;
       z-index: 9999;
       pointer-events: none;
-      background: url('texture.jpg') center center / cover no-repeat;
+      background: url('images/texture.jpg') center center / cover no-repeat;
       opacity: 0.08;
       mix-blend-mode: luminosity;
     }
@@ -700,7 +700,7 @@
   <div id="loader"><span id="loader-dots"></span></div>
 
   <nav>
-    <img class="nav-logo" src="logo.webp" alt="Ponyhof">
+    <img class="nav-logo" src="images/logo.webp" alt="Ponyhof">
     <div id="lang-switcher">
       <span id="lang-en" class="lang-opt active">En</span>
       <span id="lang-de" class="lang-opt">De</span>
@@ -760,8 +760,8 @@
 
   <div class="corner-shape">
     <video id="corner-video" autoplay muted loop playsinline preload="auto">
-      <source src="asset.webm" type="video/webm">
-      <source src="asset.mp4" type="video/mp4">
+      <source src="videos/asset.webm" type="video/webm">
+      <source src="videos/asset.mp4" type="video/mp4">
     </video>
   </div>
 
@@ -770,12 +770,11 @@
 
 
     const projects = [
-      { img: 'kickz-cover.webp', detailImg: 'kickz-cover.webp', label: 'st. pauli kickz 3x3',   url: 'https://kickz.com',             media: ['kickz-a.webp','kickz-b.webp','kickz-v1.mp4','kickz-c.webp','kickz-d.webp','kickz-v2.mp4'], desc: 'We built and ran social for St. Pauli KICKZ 3x3 from the ground up, producing all short-form photo and video content in-house and travelling with the team across the international FIBA 3x3 circuit. Within 10 months, we grew the account from zero to nearly **3,000** **followers,** while our Instagram Reels generated over **6** **million** **organic** **views** alone. We combined fast, on-the-ground tournament coverage with high-end content for the team, players and brand partners, building a social presence around a rapidly growing 3x3 project, with brand partners including Adidas, Kickz93 and Viva con Agua. The following year, the team became Baskets Bonn Telekom, with Deutsche Telekom coming on as main sponsor.' },
-      { img: 'lovelee2.webp',       label: 'Lovelee',           url: 'https://itsloveleee.com',            media: ['lovelee3.webp','lovelee-video.mp4','lovelee7.webp','lovelee1.webp','lovelee8.webp','lovelee-video2.mp4'], desc: 'We run growth for an independent artist end to end. All front and backend, including website, newsletter, outreach, and short & long form content are created in-house. That content brought us over **2.1** **million** **organic** **views,** and together with local press including Fritz Radio and Kickdrum Mag, took lovelee from zero audience in November 2025 to **65,000+** **streams** and **6,914** **monthly** **listeners** across **23+** **countries,** with no label and a small budget. Our Meta ads per-song run at around **€0.13** **per** **click,** with more than one in five listeners saving the song. Every campaign follows the same tested process, so results are measurable and repeatable.' },
-      { img: 'rfm-header.webp', detailImg: 'rfm-poster.webp', label: 'Rat für Migration', url: 'https://rat-fuer-migration.de', media: ['rfm60.webp','rfm61.webp','rfm62.webp','rfm63.webp','rfm66.webp','rfm67.webp','rfm68.webp'], desc: 'Official event photography, and poster design, for Rat für Migration\'s annual conference, "X Jahre Postmigration", a three-day event in Berlin funded by the Freudenberg Stiftung. Working directly with the organization\'s general management, we covered talks, panels and venue atmosphere across multiple locations in Berlin, including the Museum der „Trostfrauen", Humboldt University and the Kapelle am Urban. The post-production was handled entirely in-house, with the final images delivered within a short turnaround and in time to be used across the organization\'s website and social media.' },
-      { img: 'gtm-121.webp', detailImg: 'gtm-121.webp', detailCrop: 'top', label: 'GTM Tech Week', url: 'https://www.gtm-week.com', media: ['gtm-97.webp','gtm-v2.mp4','gtm-107.webp','gtm-v1.mp4','gtm-106.webp','gtm-113.webp'], desc: 'For a midweek meetup during GTM Tech Week 2026 in Berlin, Ponyhof stepped in to capture the atmosphere of Europe\'s go to market community. Working on location, we focused on candid moments, conversations, and the energy in the room, delivering a curated set of editorial stills alongside short form content to highlight the gathering.' },
-      { img: 'padel.webp',         label: 'Playground Padel',  url: 'https://playgroundpadel.de',    upcoming: true, desc: 'We\'re currently developing the social presence for Playground Padel, an upcoming padel project in Berlin. From creative direction and social strategy to content production and launch, we\'re building the project\'s digital identity from the ground up. More to come.' },
-      { img: 'trgrs.webp',         label: 'TRGRS Studios',     url: 'https://trgrs.de',               upcoming: true, desc: 'We\'re currently shaping a new digital identity for TRGRS Studios, rethinking how the Berlin studio space presents itself online. From creative direction and visual language to social strategy and content production, we\'re developing a new look and feel that better reflects the studio, its spaces and the work created within them.' },
+      { img: 'images/kickz-cover.webp', detailImg: 'images/kickz-cover.webp', label: 'st. pauli kickz 3x3',   url: 'https://kickz.com',             media: ['images/kickz-a.webp','images/kickz-b.webp','videos/kickz-v1.mp4','images/kickz-c.webp','images/kickz-d.webp','videos/kickz-v2.mp4'], desc: 'We built and ran social for St. Pauli KICKZ 3x3 from the ground up, producing all short-form photo and video content in-house and travelling with the team across the international FIBA 3x3 circuit. Within 10 months, we grew the account from zero to nearly **3,000** **followers,** while our Instagram Reels generated over **6** **million** **organic** **views** alone. We combined fast, on-the-ground tournament coverage with high-end content for the team, players and brand partners, building a social presence around a rapidly growing 3x3 project, with brand partners including Adidas, Kickz93 and Viva con Agua. The following year, the team became Baskets Bonn Telekom, with Deutsche Telekom coming on as main sponsor.' },
+      { img: 'images/lovelee2.webp',       label: 'Lovelee',           url: 'https://itsloveleee.com',            media: ['images/lovelee3.webp','videos/lovelee-video.mp4','images/lovelee7.webp','images/lovelee1.webp','images/lovelee8.webp','videos/lovelee-video2.mp4'], desc: 'We run growth for an independent artist end to end. All front and backend, including website, newsletter, outreach, and short & long form content are created in-house. That content brought us over **2.1** **million** **organic** **views,** and together with local press including Fritz Radio and Kickdrum Mag, took lovelee from zero audience in November 2025 to **65,000+** **streams** and **6,914** **monthly** **listeners** across **23+** **countries,** with no label and a small budget. Our Meta ads per-song run at around **€0.13** **per** **click,** with more than one in five listeners saving the song. Every campaign follows the same tested process, so results are measurable and repeatable.' },
+      { img: 'images/rfm-header.webp', detailImg: 'images/rfm-poster.webp', label: 'Rat für Migration', url: 'https://rat-fuer-migration.de', media: ['images/rfm60.webp','images/rfm61.webp','images/rfm62.webp','images/rfm63.webp','images/rfm66.webp','images/rfm67.webp','images/rfm68.webp'], desc: 'Official event photography, and poster design, for Rat für Migration\'s annual conference, "X Jahre Postmigration", a three-day event in Berlin funded by the Freudenberg Stiftung. Working directly with the organization\'s general management, we covered talks, panels and venue atmosphere across multiple locations in Berlin, including the Museum der „Trostfrauen", Humboldt University and the Kapelle am Urban. The post-production was handled entirely in-house, with the final images delivered within a short turnaround and in time to be used across the organization\'s website and social media.' },
+      { img: 'images/padel.webp',         label: 'Playground Padel',  url: 'https://playgroundpadel.de',    upcoming: true, desc: 'We\'re currently developing the social presence for Playground Padel, an upcoming padel project in Berlin. From creative direction and social strategy to content production and launch, we\'re building the project\'s digital identity from the ground up. More to come.' },
+      { img: 'images/trgrs.webp',         label: 'TRGRS Studios',     url: 'https://trgrs.de',               upcoming: true, desc: 'We\'re currently shaping a new digital identity for TRGRS Studios, rethinking how the Berlin studio space presents itself online. From creative direction and visual language to social strategy and content production, we\'re developing a new look and feel that better reflects the studio, its spaces and the work created within them.' },
     ];
 
     let currentDetailIndex = 0;
@@ -869,7 +868,7 @@
             const itemH = isMobile ? 260 : 300;
 
             // CD cover has white padding — wrap in overflow:hidden and scale up
-            if (src === 'lovelee7.webp') {
+            if (src === 'images/lovelee7.webp') {
               const wrap = document.createElement('div');
               wrap.className = 'cd-wrap';
               wrap.style.cssText = `width:${itemW}px;height:${itemH}px;overflow:hidden;flex-shrink:0;display:flex;align-items:center;justify-content:center;`;
@@ -1337,7 +1336,6 @@
         'st. pauli kickz 3x3': projects.find(p => p.label === 'st. pauli kickz 3x3').desc,
         'Lovelee': projects.find(p => p.label === 'Lovelee').desc,
         'Rat für Migration': projects.find(p => p.label === 'Rat für Migration').desc,
-        'GTM Tech Week': projects.find(p => p.label === 'GTM Tech Week').desc,
         'Playground Padel': projects.find(p => p.label === 'Playground Padel').desc,
         'TRGRS Studios': projects.find(p => p.label === 'TRGRS Studios').desc,
       },
@@ -1345,7 +1343,6 @@
         'st. pauli kickz 3x3': 'Wir haben das Social-Media-Profil für St. Pauli KICKZ 3x3 von Grund auf aufgebaut und betreut – alle Foto- und Videoinhalte wurden intern produziert, während wir das Team auf dem internationalen FIBA 3x3-Circuit begleitet haben. In zehn Monaten wuchs der Account von null auf knapp **3.000** **Follower,** während unsere Instagram Reels allein über **6** **Millionen** **organische** **Views** erzielten. Wir kombinierten schnelle Turnierberichterstattung mit hochwertigen Inhalten für Team, Spieler und Markenpartner – darunter Adidas, Kickz93 und Viva con Agua. Im darauffolgenden Jahr wurde das Team zu Baskets Bonn Telekom, mit der Deutschen Telekom als Hauptsponsor.',
         'Lovelee': 'Wir betreuen das Wachstum einer unabhängigen Künstlerin von A bis Z. Website, Newsletter, Outreach sowie kurze und lange Formate werden vollständig intern erstellt. Diese Inhalte brachten über **2,1** **Millionen** **organische** **Views** und führten – zusammen mit lokaler Presse wie Fritz Radio und Kickdrum Mag – dazu, dass lovelee von null auf **65.000+** **Streams** und **6.914** **monatliche** **Hörer** in **23+** **Ländern** gewachsen ist, ohne Label und mit kleinem Budget. Unsere Meta-Anzeigen kosten etwa **€0,13** **pro** **Klick,** bei einer Save-Rate von mehr als einem von fünf Hörern. Jede Kampagne folgt demselben erprobten Prozess – messbar und wiederholbar.',
         'Rat für Migration': 'Offizielle Eventfotografie und Plakatgestaltung für die Jahreskonferenz von Rat für Migration, „X Jahre Postmigration" – eine dreitägige Veranstaltung in Berlin, gefördert von der Freudenberg Stiftung. In direkter Zusammenarbeit mit der Geschäftsführung begleiteten wir Vorträge, Panels und Atmosphäre an verschiedenen Berliner Locations, darunter das Museum der „Trostfrauen", die Humboldt-Universität und die Kapelle am Urban. Die Postproduktion wurde vollständig intern abgewickelt und die fertigen Bilder pünktlich für Website und Social Media der Organisation geliefert.',
-        'GTM Tech Week': 'Für ein Midweek-Meetup während der GTM Tech Week 2026 in Berlin war Ponyhof vor Ort, um die Atmosphäre der europäischen Go-to-Market-Community einzufangen. Wir konzentrierten uns auf ungestellte Momente, Gespräche und die Energie im Raum – und lieferten ein kuratiertes Set redaktioneller Fotos sowie Short-Form-Content, der das Treffen festhält.',
         'Playground Padel': 'Wir entwickeln derzeit die Social-Präsenz für Playground Padel, ein aufstrebendes Padel-Projekt in Berlin. Von der kreativen Leitung über die Inhaltsstrategie bis hin zu Produktion und Launch bauen wir die digitale Identität des Projekts von Grund auf auf. Mehr demnächst.',
         'TRGRS Studios': 'Wir gestalten gerade eine neue digitale Identität für TRGRS Studios und überdenken, wie sich der Berliner Studioraum online präsentiert. Von kreativer Leitung und Bildsprache über Social-Strategie bis hin zur Content-Produktion entwickeln wir einen neuen Look & Feel, der das Studio, seine Räume und die dort entstehende Arbeit besser widerspiegelt.',
       }
