@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Page not found | Ponyhof</title>
+  <meta name="robots" content="noindex, follow">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png">
+  <link rel="preload" href="/space-mono-400-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/space-mono-700-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/fonts.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --blue: #2533DF; --cream: #EDE7CC; }
+    html, body { background: var(--blue); color: var(--cream); font-family: 'Space Mono', 'Courier New', monospace; min-height: 100%; }
+    body { display: flex; flex-direction: column; min-height: 100vh; }
+    body::after { content: ''; position: fixed; inset: 0; z-index: 9999; pointer-events: none; background: url('/texture.jpg') center center / cover no-repeat; opacity: 0.08; mix-blend-mode: luminosity; }
+    nav { padding: 32px 40px; display: flex; align-items: center; justify-content: space-between; }
+    .nav-logo { height: 48px; width: auto; display: block; }
+    .nav-back { color: var(--cream); text-decoration: none; font-size: 14px; letter-spacing: 0.05em; opacity: 0.7; white-space: nowrap; }
+    .nav-back:hover { opacity: 1; }
+    .container { flex: 1; max-width: 640px; width: 100%; margin: 0 auto; padding: 60px 40px 120px; }
+    .code { font-size: clamp(72px, 18vw, 160px); font-weight: 700; letter-spacing: -0.06em; line-height: 1; }
+    h1 { font-size: 20px; font-weight: 700; margin: 24px 0 12px; }
+    p { font-size: 14px; line-height: 1.8; opacity: 0.85; }
+    ul { list-style: none; margin-top: 40px; display: flex; flex-direction: column; gap: 14px; }
+    li a { color: var(--cream); font-size: 15px; text-decoration: none; border-bottom: 1px solid rgba(237,231,204,0.35); padding-bottom: 2px; }
+    li a:hover, li a:focus-visible { border-color: var(--cream); }
+    footer { padding: 40px; font-size: 12px; opacity: 0.4; }
+    footer a { color: var(--cream); text-decoration: none; }
+    @media (max-width: 600px) {
+      nav { padding: 20px; }
+      .nav-logo { height: 32px; }
+      .container { padding: 40px 20px 80px; }
+      footer { padding: 20px; }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="/"><img class="nav-logo" src="/logo.webp" alt="Ponyhof"></a>
+    <a class="nav-back" href="/">← Home</a>
+  </nav>
+
+  <main class="container">
+    <div class="code" aria-hidden="true">404</div>
+    <h1>This page doesn't exist.</h1>
+    <p>The link may be old or mistyped. Here is where you probably wanted to go.</p>
+    <ul>
+      <li><a href="/">Home and work</a></li>
+      <li><a href="/event-photography-berlin">Event photography Berlin</a></li>
+      <li><a href="/commercial-video-berlin">Commercial video Berlin</a></li>
+      <li><a href="/de" lang="de">Deutsch</a></li>
+      <li><a href="mailto:alex@ponyhof.studio">alex@ponyhof.studio</a></li>
+    </ul>
+  </main>
+
+  <footer>
+    <span>© 2026 Ponyhof · <a href="/">ponyhof.studio</a></span>
+  </footer>
+</body>
+</html>

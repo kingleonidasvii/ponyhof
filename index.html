@@ -3,13 +3,59 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ponyhof</title>
-  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
-  <link rel="apple-touch-icon" href="favicon.png">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <title>Ponyhof | Event Photographer & Commercial Videographer Berlin</title>
+  <meta name="description" content="Ponyhof is a Berlin event photographer and commercial videographer. Corporate event photography, brand video production and content for startups and founders. Fast turnaround, editorial quality.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://ponyhof.studio/">
+  <link rel="alternate" hreflang="en" href="https://ponyhof.studio/">
+  <link rel="alternate" hreflang="de" href="https://ponyhof.studio/de">
+  <link rel="alternate" hreflang="x-default" href="https://ponyhof.studio/">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://ponyhof.studio/">
+  <meta property="og:title" content="Ponyhof | Event Photographer & Commercial Videographer Berlin">
+  <meta property="og:description" content="Berlin event photographer and commercial videographer. Corporate events, brand video production and content for startups and founders.">
+  <meta property="og:image" content="https://ponyhof.studio/og-image.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:locale" content="en_DE">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Ponyhof | Commercial Photography & Video Production Berlin">
+  <meta name="twitter:description" content="Photography and video production in Berlin for corporate events, brands and founders.">
+  <meta name="twitter:image" content="https://ponyhof.studio/og-image.jpg">
+
+  <!-- JSON-LD Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ProfessionalService",
+    "name": "Ponyhof",
+    "url": "https://ponyhof.studio",
+    "logo": "https://ponyhof.studio/favicon.png",
+    "image": "https://ponyhof.studio/og-image.jpg",
+    "description": "Berlin-based photography and video production studio specialising in corporate events, brand campaigns, and founder content.",
+    "email": "alex@ponyhof.studio",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Berlin",
+      "addressCountry": "DE"
+    },
+    "areaServed": {
+      "@type": "City",
+      "name": "Berlin"
+    },
+    "serviceType": ["Event Photography Berlin", "Corporate Event Photography", "Conference Photography", "Commercial Videographer Berlin", "Brand Video Production Berlin", "Corporate Video Production", "Content Production Berlin", "Conference Videographer Berlin"],
+    "sameAs": ["https://www.instagram.com/ponyhof.studio/"]
+  }
+  </script>
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png">
+  <link rel="apple-touch-icon" href="/favicon.png">
+  <link rel="preload" href="/space-mono-400-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/space-mono-700-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/fonts.css">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -72,6 +118,7 @@
     nav img, nav #lang-switcher { pointer-events: auto; }
     nav.visible { opacity: 1; }
 
+    .nav-h1 { display: contents; }
     .nav-logo {
       height: 64px;
       width: auto;
@@ -301,6 +348,45 @@
       text-underline-offset: 3px;
     }
 
+    .site-links {
+      position: fixed;
+      bottom: 32px;
+      left: 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 8px;
+      z-index: 50;
+      opacity: 0;
+      transform: translateY(8px);
+      pointer-events: none;
+      transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+    .site-links.visible { opacity: 1; transform: none; pointer-events: auto; }
+    .site-links a {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      color: var(--cream);
+      text-decoration: none;
+      text-underline-offset: 3px;
+    }
+    .site-links a:hover, .site-links a:focus-visible { text-decoration: underline; }
+    body:has(.work-grid.detail-open) .site-links { opacity: 0; pointer-events: none; }
+
+    /* hint that more is below: a small chevron where the links appear */
+    .scroll-hint {
+      position: fixed; left: 40px; bottom: 32px; z-index: 50;
+      background: none; border: 0; padding: 8px; margin: -8px; cursor: pointer;
+      color: var(--cream); opacity: 0; transition: opacity 0.4s ease;
+    }
+    .scroll-hint svg { display: block; animation: hintBob 1.8s ease-in-out infinite; }
+    .scroll-hint.ready { opacity: 1; }
+    .site-links.visible ~ .scroll-hint, body:has(.work-grid.detail-open) .scroll-hint { opacity: 0; pointer-events: none; }
+    .scroll-hint:focus-visible { outline: 2px solid var(--cream); outline-offset: 2px; }
+    @keyframes hintBob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(5px); } }
+    @media (prefers-reduced-motion: reduce) { .scroll-hint svg { animation: none; } }
+
     .lang-opt:hover { opacity: 0.8; }
 
     #impressum-overlay {
@@ -464,6 +550,7 @@
     }
 
     .detail-link:hover { text-decoration: underline; }
+    .detail-case { margin-top: 6px; }
 
     .detail-back {
       font-family: 'Space Mono', monospace;
@@ -686,6 +773,9 @@
       .corner-shape { display: block; bottom: 20px; right: 20px; mix-blend-mode: screen; }
       #lang-switcher { top: 16px; right: 16px; gap: 6px; flex-direction: column; align-items: flex-end; }
       .lang-opt:not(.active):not(#impressum-btn) { display: none; }
+      .site-links { left: 20px; bottom: 20px; gap: 6px; }
+      .site-links a { font-size: 10px; letter-spacing: 0.06em; }
+      .scroll-hint { left: 20px; bottom: 20px; }
     }
     @media (max-width: 900px) and (min-width: 601px) {
       .corner-shape { display: none; }
@@ -700,7 +790,7 @@
   <div id="loader"><span id="loader-dots"></span></div>
 
   <nav>
-    <img class="nav-logo" src="logo.webp" alt="Ponyhof">
+    <h1 class="nav-h1"><img class="nav-logo" src="/logo.webp" alt="Ponyhof, event photography and commercial video in Berlin"></h1>
     <div id="lang-switcher">
       <span id="lang-en" class="lang-opt active">En</span>
       <span id="lang-de" class="lang-opt">De</span>
@@ -715,13 +805,15 @@
       <p>Angaben gemäß § 5 DDG</p>
       <p>Leon Byvanck<br>c/o POSTFLEX PFX-881-696<br>Emsdettener Straße 10<br>48268 Greven<br>Deutschland</p>
       <h3>Kontakt</h3>
-      <p>E-Mail: <a href="mailto:contact@ponyhof.studio">contact@ponyhof.studio</a></p>
+      <p>E-Mail: <a href="mailto:alex@ponyhof.studio">alex@ponyhof.studio</a></p>
       <h3>Verbraucherstreitbeilegung</h3>
       <p>Wir sind nicht bereit oder verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.</p>
       <h3>Haftung für Inhalte</h3>
       <p>Als Diensteanbieter sind wir gemäß § 9 Abs. 1 DDG für eigene Inhalte auf diesen Seiten nach den allgemeinen Gesetzen verantwortlich.</p>
       <h3>Urheberrecht</h3>
       <p>Die durch die Seitenbetreiber erstellten Inhalte und Werke auf diesen Seiten unterliegen dem deutschen Urheberrecht. Die Vervielfältigung, Bearbeitung, Verbreitung und jede Art der Verwertung außerhalb der Grenzen des Urheberrechtes bedürfen der schriftlichen Zustimmung des jeweiligen Autors bzw. Erstellers.</p>
+      <h3>Datenschutz</h3>
+      <p><a href="/datenschutz">Datenschutzerklärung</a></p>
     </div>
   </div>
 
@@ -747,7 +839,7 @@
 
     <div class="contact-info" id="contact-info">
       <a href="https://instagram.com/ponyhof.studio" target="_blank" id="contact-ig"></a>
-      <a href="mailto:contact@ponyhof.studio" id="contact-email"></a>
+      <a href="mailto:alex@ponyhof.studio" id="contact-email"></a>
       <span class="close-btn" id="close-btn">
         <svg width="40" height="32" viewBox="0 0 40 32" fill="none" xmlns="http://www.w3.org/2000/svg">
           <polyline points="10,2 2,16 10,30" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -758,10 +850,19 @@
     </div>
   </main>
 
+  <footer class="site-links" id="site-links">
+    <a href="/event-photography-berlin">Event photography Berlin</a>
+    <a href="/commercial-video-berlin">Commercial video Berlin</a>
+    <a href="/datenschutz">Datenschutz</a>
+  </footer>
+  <button class="scroll-hint" id="scroll-hint" type="button" aria-label="Show more links" aria-controls="site-links">
+    <svg width="28" height="16" viewBox="0 0 28 16" fill="none" aria-hidden="true"><polyline points="2,2 14,14 26,2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>
+
   <div class="corner-shape">
     <video id="corner-video" autoplay muted loop playsinline preload="auto">
-      <source src="asset.webm" type="video/webm">
-      <source src="asset.mp4" type="video/mp4">
+      <source src="/asset.webm" type="video/webm">
+      <source src="/asset.mp4" type="video/mp4">
     </video>
   </div>
 
@@ -770,12 +871,12 @@
 
 
     const projects = [
-      { img: 'kickz-cover.webp', detailImg: 'kickz-cover.webp', label: 'st. pauli kickz 3x3',   url: 'https://kickz.com',             media: ['kickz-a.webp','kickz-b.webp','kickz-v1.mp4','kickz-c.webp','kickz-d.webp','kickz-v2.mp4'], desc: 'We built and ran social for St. Pauli KICKZ 3x3 from the ground up, producing all short-form photo and video content in-house and travelling with the team across the international FIBA 3x3 circuit. Within 10 months, we grew the account from zero to nearly **3,000** **followers,** while our Instagram Reels generated over **6** **million** **organic** **views** alone. We combined fast, on-the-ground tournament coverage with high-end content for the team, players and brand partners, building a social presence around a rapidly growing 3x3 project, with brand partners including Adidas, Kickz93 and Viva con Agua. The following year, the team became Baskets Bonn Telekom, with Deutsche Telekom coming on as main sponsor.' },
-      { img: 'lovelee2.webp',       label: 'Lovelee',           url: 'https://itsloveleee.com',            media: ['lovelee3.webp','lovelee-video.mp4','lovelee7.webp','lovelee1.webp','lovelee8.webp','lovelee-video2.mp4'], desc: 'We run growth for an independent artist end to end. All front and backend, including website, newsletter, outreach, and short & long form content are created in-house. That content brought us over **2.1** **million** **organic** **views,** and together with local press including Fritz Radio and Kickdrum Mag, took lovelee from zero audience in November 2025 to **65,000+** **streams** and **6,914** **monthly** **listeners** across **23+** **countries,** with no label and a small budget. Our Meta ads per-song run at around **€0.13** **per** **click,** with more than one in five listeners saving the song. Every campaign follows the same tested process, so results are measurable and repeatable.' },
-      { img: 'gtm-121.webp', detailImg: 'gtm-121.webp', detailCrop: 'top', label: 'GTM Tech Week', url: 'https://www.gtm-week.com', media: ['gtm-97.webp','gtm-v2.mp4','gtm-107.webp','gtm-v1.mp4','gtm-106.webp','gtm-113.webp'], desc: 'For a midweek meetup during GTM Tech Week 2026 in Berlin, Ponyhof stepped in to capture the atmosphere of Europe\'s go to market community. Working on location, we focused on candid moments, conversations, and the energy in the room, delivering a curated set of editorial stills alongside short form content to highlight the gathering.' },
-      { img: 'rfm-header.webp', detailImg: 'rfm-poster.webp', label: 'Rat für Migration', url: 'https://rat-fuer-migration.de', media: ['rfm60.webp','rfm61.webp','rfm62.webp','rfm63.webp','rfm66.webp','rfm67.webp','rfm68.webp'], desc: 'Official event photography, and poster design, for Rat für Migration\'s annual conference, "X Jahre Postmigration", a three-day event in Berlin funded by the Freudenberg Stiftung. Working directly with the organization\'s general management, we covered talks, panels and venue atmosphere across multiple locations in Berlin, including the Museum der „Trostfrauen", Humboldt University and the Kapelle am Urban. The post-production was handled entirely in-house, with the final images delivered within a short turnaround and in time to be used across the organization\'s website and social media.' },
-      { img: 'padel.webp',         label: 'Playground Padel',  url: 'https://playgroundpadel.de',    upcoming: true, desc: 'We\'re currently developing the social presence for Playground Padel, an upcoming padel project in Berlin. From creative direction and social strategy to content production and launch, we\'re building the project\'s digital identity from the ground up. More to come.' },
-      { img: 'trgrs.webp',         label: 'TRGRS Studios',     url: 'https://trgrs.de',               upcoming: true, desc: 'We\'re currently shaping a new digital identity for TRGRS Studios, rethinking how the Berlin studio space presents itself online. From creative direction and visual language to social strategy and content production, we\'re developing a new look and feel that better reflects the studio, its spaces and the work created within them.' },
+      { img: 'kickz-cover.webp', detailImg: 'kickz-cover.webp', label: 'st. pauli kickz 3x3', caseStudy: '/kickz',   url: 'https://kickz.com',             media: ['kickz-a.webp','kickz-b.webp','kickz-v1.mp4','kickz-c.webp','kickz-d.webp','kickz-v2.mp4'], desc: 'We built and ran social for St. Pauli KICKZ 3x3 from the ground up, producing all short form photo and video content in-house and travelling with the team across the international FIBA 3x3 circuit. Within 10 months, we grew the account from zero to nearly **3,000** **followers,** while our Instagram Reels generated over **6** **million** **organic** **views** alone. We combined fast, on-the-ground tournament coverage with high-end content for the team, players and brand partners, building a social presence around a rapidly growing 3x3 project, with brand partners including Adidas, Kickz93 and Viva con Agua. The following year, the team became Baskets Bonn Telekom, with Deutsche Telekom coming on as main sponsor.' },
+      { img: 'lovelee2.webp',       label: 'Lovelee', caseStudy: '/lovelee',           url: 'https://itsloveleee.com',            media: ['lovelee3.webp','lovelee-video.mp4','lovelee7.webp','lovelee1.webp','lovelee8.webp','lovelee-video2.mp4'], desc: 'We run growth for an independent artist end to end. All front and backend, including website, newsletter, outreach, and short & long form content are created in-house. That content brought us over **2.1** **million** **organic** **views,** and together with local press including Fritz Radio and Kickdrum Mag, took lovelee from zero audience in November 2025 to **65,000+** **streams** and **6,914** **monthly** **listeners** across **23+** **countries,** with no label and a small budget. Our Meta ads per song run at around **€0.13** **per** **click,** with more than one in five listeners saving the song. Every campaign follows the same tested process, so results are measurable and repeatable.' },
+      { img: 'gtm-121.webp', detailImg: 'gtm-121.webp', detailCrop: 'top', label: 'GTM Tech Week', caseStudy: '/gtm-tech-week', url: 'https://www.gtm-week.com', media: ['gtm-97.webp','gtm-v2.mp4','gtm-107.webp','gtm-106.webp','gtm-113.webp'], desc: 'For a midweek meetup during GTM Tech Week 2026 in Berlin, Ponyhof stepped in to capture the atmosphere of Europe\'s go to market community. Working on location, we focused on candid moments, conversations, and the energy in the room, delivering a curated set of editorial stills alongside short form content to highlight the gathering.' },
+      { img: 'rfm-header.webp', detailImg: 'rfm-poster.webp', label: 'Rat für Migration', caseStudy: '/rat-fuer-migration', url: 'https://rat-fuer-migration.de', media: ['rfm60.webp','rfm61.webp','rfm62.webp','rfm63.webp','rfm66.webp','rfm67.webp','rfm68.webp'], desc: 'Official event photography, and poster design, for Rat für Migration\'s annual conference, "X Jahre Postmigration", a three-day event in Berlin funded by the Freudenberg Stiftung. Working directly with the organization\'s general management, we covered talks, panels and venue atmosphere across multiple locations in Berlin, including the Museum der „Trostfrauen", Humboldt University and the Kapelle am Urban. The post-production was handled entirely in-house, with the final images delivered within a short turnaround and in time to be used across the organization\'s website and social media.' },
+      { img: 'padel.webp',         label: 'Playground Padel', caseStudy: '/playground-padel',  url: 'https://playgroundpadel.de',    upcoming: true, desc: 'We\'re currently developing the social presence for Playground Padel, an upcoming padel project in Berlin. From creative direction and social strategy to content production and launch, we\'re building the project\'s digital identity from the ground up. More to come.' },
+      { img: 'trgrs.webp',         label: 'TRGRS Studios', caseStudy: '/trgrs-studios',     url: 'https://trgrs.de',               upcoming: true, desc: 'We\'re currently shaping a new digital identity for TRGRS Studios, rethinking how the Berlin studio space presents itself online. From creative direction and visual language to social strategy and content production, we\'re developing a new look and feel that better reflects the studio, its spaces and the work created within them.' },
     ];
 
     let currentDetailIndex = 0;
@@ -859,6 +960,8 @@
             } else {
               el = document.createElement('img');
               el.src = src;
+              el.alt = project.label + ', photo by Ponyhof Berlin';
+              el.loading = 'lazy';
               el.decoding = 'async';
             }
             el.style.objectFit = 'cover';
@@ -956,7 +1059,8 @@
       panel.innerHTML = `
         <span class="detail-label"></span>
         <p class="detail-desc" data-project="${project.label}"></p>
-        <a class="detail-link" href="${project.url}" target="_blank" style="opacity:0">${i18n[currentLang].visit}</a>`;
+        <a class="detail-link" href="${project.url}" target="_blank" style="opacity:0">${i18n[currentLang].visit}</a>${project.caseStudy ? `
+        <a class="detail-link detail-case" href="${project.caseStudy}" style="opacity:0">${i18n[currentLang].case_study}</a>` : ''}`;
       const labelEl = panel.querySelector('.detail-label');
       const descEl = panel.querySelector('.detail-desc');
       const linkEl = panel.querySelector('.detail-link');
@@ -968,7 +1072,7 @@
         return `<span class="desc-char"${bold ? ' style="font-weight:700"' : ''}>${text}</span>`;
       }).join(' ');
       attachDescEffect(descEl);
-      linkEl.style.opacity = '1';
+      panel.querySelectorAll('.detail-link').forEach(a => { a.style.opacity = '1'; });
     }
 
     function hideDetail() {
@@ -1135,7 +1239,7 @@
         document.getElementById('nav-links').style.display = 'none';
         document.getElementById('contact-info').classList.add('visible');
         document.getElementById('contact-ig').textContent = '@ponyhof.studio';
-        document.getElementById('contact-email').textContent = 'contact@ponyhof.studio';
+        document.getElementById('contact-email').textContent = 'alex@ponyhof.studio';
         document.getElementById('close-btn').classList.add('visible');
         return;
       }
@@ -1162,6 +1266,35 @@
       }
       document.getElementById('work-close').classList.add('visible');
     }
+
+    // bottom link row: appears on a downward scroll or swipe, hides on an upward one
+    (function siteLinksReveal() {
+      const row = document.getElementById('site-links');
+      const show = () => row.classList.add('visible');
+      const hide = () => row.classList.remove('visible');
+      window.addEventListener('wheel', e => {
+        if (Math.abs(e.deltaY) < 4 || Math.abs(e.deltaY) <= Math.abs(e.deltaX)) return;
+        e.deltaY > 0 ? show() : hide();
+      }, { passive: true });
+      let startX = null, startY = null;
+      window.addEventListener('touchstart', e => {
+        startX = e.touches[0].clientX; startY = e.touches[0].clientY;
+      }, { passive: true });
+      window.addEventListener('touchmove', e => {
+        if (startY === null) return;
+        const dy = startY - e.touches[0].clientY;
+        const dx = startX - e.touches[0].clientX;
+        if (Math.abs(dy) > 30 && Math.abs(dy) > Math.abs(dx)) { dy > 0 ? show() : hide(); startY = null; }
+      }, { passive: true });
+      window.addEventListener('keydown', e => {
+        if (['ArrowDown', 'PageDown', 'End'].includes(e.key)) show();
+        if (['ArrowUp', 'PageUp', 'Home'].includes(e.key)) hide();
+      });
+      row.addEventListener('focusin', show);
+      const hint = document.getElementById('scroll-hint');
+      hint.addEventListener('click', () => { show(); row.querySelector('a').focus({ preventScroll: true }); });
+      setTimeout(() => hint.classList.add('ready'), 2800);
+    })();
 
     // loader sequence on page load
     (function initLoader() {
@@ -1297,6 +1430,7 @@
         nav_contact: 'contact',
         collection: 'curated collection',
         visit: 'visit ↗',
+        case_study: 'case study',
         upcoming_tag: '↗ upcoming project',
         upcoming_dog: '↗ upcoming',
         impressum: {
@@ -1316,6 +1450,7 @@
         nav_contact: 'kontakt',
         collection: 'kuratierte sammlung',
         visit: 'besuchen ↗',
+        case_study: 'mehr dazu',
         upcoming_tag: '↗ kommendes projekt',
         upcoming_dog: '↗ demnächst',
         impressum: {
@@ -1374,6 +1509,8 @@
       if (openDetail) {
         const linkEl = openDetail.querySelector('.detail-link');
         if (linkEl) linkEl.textContent = t.visit;
+        const caseEl = openDetail.querySelector('.detail-case');
+        if (caseEl) caseEl.textContent = t.case_study;
         const descEl = openDetail.querySelector('.detail-desc');
         if (descEl && descEl.dataset.project) {
           const dDesc = projectsI18n[lang][descEl.dataset.project];
@@ -1405,13 +1542,15 @@
         <p>${imp.intro}</p>
         <p>Leon Byvanck<br>c/o POSTFLEX PFX-881-696<br>Emsdettener Straße 10<br>48268 Greven<br>Deutschland</p>
         <h3>${imp.contact_h}</h3>
-        <p>E-Mail: <a href="mailto:contact@ponyhof.studio">contact@ponyhof.studio</a></p>
+        <p>E-Mail: <a href="mailto:alex@ponyhof.studio">alex@ponyhof.studio</a></p>
         <h3>${imp.dispute_h}</h3>
         <p>${imp.dispute}</p>
         <h3>${imp.liability_h}</h3>
         <p>${imp.liability}</p>
         <h3>${imp.copyright_h}</h3>
         <p>${imp.copyright}</p>
+        <h3>Datenschutz</h3>
+        <p><a href="/datenschutz">Datenschutzerklärung</a></p>
       `;
       document.getElementById('impressum-close').addEventListener('click', () => {
         document.getElementById('impressum-overlay').classList.remove('visible');
@@ -1450,7 +1589,7 @@
       email.textContent = '';
       document.getElementById('contact-info').classList.add('visible');
       typewrite(ig, '@ponyhof.studio', 28, () => {
-        setTimeout(() => typewrite(email, 'contact@ponyhof.studio', 22, () => {
+        setTimeout(() => typewrite(email, 'alex@ponyhof.studio', 22, () => {
           setTimeout(() => document.getElementById('close-btn').classList.add('visible'), 200);
         }), 100);
       });
